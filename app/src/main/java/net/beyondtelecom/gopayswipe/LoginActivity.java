@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,7 +32,7 @@ import java.util.List;
  * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
  * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
 
 	/**
 	 * A dummy authentication store containing known user names and passwords.
@@ -53,12 +54,13 @@ public class LoginActivity extends Activity {
 	private View mProgressView;
 	private View mEmailLoginFormView;
 	private View mLoginFormView;
+	Button mEmailRegisterButton;
+	Button mEmailLoginButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-
 		loginActivity = this;
 
 		// Set up the login form.
@@ -76,20 +78,15 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
-		mEmailRegisterButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				attemptLogin();
-			}
-		});
+		mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
 
-		Button mEmailLoginButton = (Button) findViewById(R.id.email_sign_in_button);
+		mEmailRegisterButton.setOnClickListener(new RegisterListener());
+
+		mEmailLoginButton = (Button) findViewById(R.id.email_sign_in_button);
 		mEmailLoginButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent swipeIntent = new Intent(loginActivity, ChargeActivity.class);
-				startActivity(swipeIntent);
+				attemptLogin();
 			}
 		});
 
@@ -99,57 +96,63 @@ public class LoginActivity extends Activity {
 //		mSignOutButtons = findViewById(R.id.plus_sign_out_buttons);
 	}
 
-	/**
-	 * Attempts to sign in or register the account specified by the login form.
-	 * If there are form errors (invalid email, missing fields, etc.), the
-	 * errors are presented and no actual login attempt is made.
-	 */
-	public void attemptLogin() {
-		if (mAuthTask != null) {
-			return;
-		}
+	public boolean isValidInputs() {
 
-		// Reset errors.
-		mEmailView.setError(null);
-		mPasswordView.setError(null);
-
-		// Store values at the time of the login attempt.
 		String email = mEmailView.getText().toString();
 		String password = mPasswordView.getText().toString();
-
-		boolean cancel = false;
-		View focusView = null;
 
 		// Check for a valid password, if the user entered one.
 		if (!TextUtils.isEmpty(password) && !Validator.isValidPassword(password)) {
 			mPasswordView.setError(getString(R.string.error_invalid_password));
-			focusView = mPasswordView;
-			cancel = true;
+			mPasswordView.requestFocus();
+			return false;
 		}
 
 		// Check for a valid email address.
 		if (TextUtils.isEmpty(email)) {
 			mEmailView.setError(getString(R.string.error_field_required));
-			focusView = mEmailView;
-			cancel = true;
+			mEmailView.requestFocus();
+			return false;
 		} else if (!Validator.isValidEmail(email)) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
-			cancel = true;
+			mEmailView.requestFocus();
+			return false;
 		}
 
-		if (cancel) {
-			// There was an error; don't attempt login and focus the first
-			// form field with an error.
-			focusView.requestFocus();
-		} else {
-			// Show a progress spinner, and kick off a background task to
-			// perform the user login attempt.
-			showProgress(true);
-			mAuthTask = new UserLoginTask(email, password);
-			mAuthTask.execute((Void) null);
+		return true;
+	}
+
+	class RegisterListener implements View.OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+
+			mEmailView.setError(null);
+			mPasswordView.setError(null);
+
+			if (isValidInputs()) {
+				Intent swipeIntent = new Intent(loginActivity, BankActivity.class);
+				startActivity(swipeIntent);
+			}
+
 		}
 	}
+
+	public void attemptLogin() {
+//		if (mAuthTask != null) {
+//			return;
+//		}
+
+		mEmailView.setError(null);
+		mPasswordView.setError(null);
+
+		if (isValidInputs()) {
+			Intent swipeIntent = new Intent(loginActivity, ChargeActivity.class);
+			startActivity(swipeIntent);
+		}
+	}
+
+	public static Activity getLoginActivity() { return loginActivity; }
 
 	/**
 	 * Shows the progress UI and hides the login form.

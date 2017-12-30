@@ -1,12 +1,16 @@
 package net.beyondtelecom.gopayswipe;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import static net.beyondtelecom.gopayswipe.LoginActivity.getLoginActivity;
 
 /**
  * A login screen that offers login via email/password and via Google+ sign in.
@@ -16,24 +20,33 @@ import android.widget.Spinner;
  * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
  * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
  */
-public class BankActivity extends Activity {
+public class BankActivity extends AppCompatActivity {
 
+	protected Activity bankActivity;
 	protected View mobileDetailsLayout;
 	protected View bankDetailsLayout;
 	protected Spinner chooseCashoutType;
 	protected Spinner chooseBank;
 	protected Button btnSkipCashout;
+	protected Button btnAddMobileCashout;
+	protected Button btnAddBankCashout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bank_account);
+		bankActivity = this;
 
 		mobileDetailsLayout = findViewById(R.id.detailsMobileBank);
 		bankDetailsLayout = findViewById(R.id.detailsBankAccount);
 		chooseCashoutType = (Spinner) findViewById(R.id.spnChooseCashoutType);
 		chooseBank = (Spinner) findViewById(R.id.spnChooseBank);
 		btnSkipCashout = (Button) findViewById(R.id.btnSkipCashout);
+		btnAddMobileCashout = (Button) findViewById(R.id.btnAddMobileCashout);
+		btnAddBankCashout = (Button) findViewById(R.id.btnAddBankCashout);
+		btnSkipCashout.setOnClickListener(new SkipCashoutListener());
+		btnAddMobileCashout.setOnClickListener(new AddMobileCashoutListener());
+		btnAddBankCashout.setOnClickListener(new AddBankCashoutListener());
 
 		populateBankAccounts();
 	}
@@ -74,6 +87,30 @@ public class BankActivity extends Activity {
 		R.array.bank_name, android.R.layout.simple_spinner_item);
 		bankAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		chooseBank.setAdapter(bankAdapter);
+	}
+
+	class SkipCashoutListener implements View.OnClickListener {
+		@Override
+		public void onClick(View v) {
+			Intent swipeIntent = new Intent(getLoginActivity(), ChargeActivity.class);
+			startActivity(swipeIntent);
+		}
+	}
+
+	class AddMobileCashoutListener implements View.OnClickListener {
+		@Override
+		public void onClick(View v) {
+			Intent swipeIntent = new Intent(getLoginActivity(), ChargeActivity.class);
+			startActivity(swipeIntent);
+		}
+	}
+
+	class AddBankCashoutListener implements View.OnClickListener {
+		@Override
+		public void onClick(View v) {
+			Intent swipeIntent = new Intent(getLoginActivity(), ChargeActivity.class);
+			startActivity(swipeIntent);
+		}
 	}
 }
 

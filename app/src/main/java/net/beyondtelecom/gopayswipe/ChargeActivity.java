@@ -1,9 +1,9 @@
 package net.beyondtelecom.gopayswipe;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,13 +15,14 @@ import android.widget.TextView;
 import com.square.MagRead;
 import com.square.MagReadListener;
 
-public class ChargeActivity extends Activity {
+public class ChargeActivity extends AppCompatActivity {
 	private Spinner chooseCurrencyType;
 	private UpdateBytesHandler updateBytesHandler;
 	private UpdateBitsHandler updateBitsHandler;
 	private TextView decodedStringView;
 	private TextView strippedBinaryView;
 	private Button startBtn;
+	private Button cancelBtn;
 	private MagRead read;
 	private ProgressBar prbScanning;
 
@@ -32,6 +33,7 @@ public class ChargeActivity extends Activity {
 
 		chooseCurrencyType = (Spinner) findViewById(R.id.spnChooseCurrencyType);
 		startBtn = (Button)findViewById(R.id.btnStartSwipe);
+		cancelBtn = (Button)findViewById(R.id.btnCancelTrans);
 		decodedStringView = (TextView)findViewById(R.id.edtCardBytes);
 		strippedBinaryView = (TextView)findViewById(R.id.edtCardBits);
 		prbScanning = (ProgressBar)findViewById(R.id.prbScanning);
@@ -55,7 +57,9 @@ public class ChargeActivity extends Activity {
 			}
 		});
 		MicListener ml = new MicListener();
+		CancelListener cl = new CancelListener();
 		startBtn.setOnClickListener(ml);
+		cancelBtn.setOnClickListener(cl);
 		updateBytesHandler = new UpdateBytesHandler();
 		updateBitsHandler = new UpdateBitsHandler();
 
@@ -106,16 +110,27 @@ public class ChargeActivity extends Activity {
 
 	}
 
+
+	/**
+	 * Listener called with the mic status button is clicked, and when the zero level or noise thresholds are changed
+	 */
+	private class CancelListener implements View.OnClickListener {
+		@Override
+		public void onClick(View v) { stopReading();}
+	}
+
 	protected void stopReading() {
 		startBtn.setEnabled(true);
 		read.stop();
 		prbScanning.setVisibility(View.GONE);
+		cancelBtn.setVisibility(View.GONE);
 	}
 
 	protected void startReading() {
 		startBtn.setEnabled(false);
 		read.start();
 		prbScanning.setVisibility(View.VISIBLE);
+		cancelBtn.setVisibility(View.VISIBLE);
 	}
 
 	private class UpdateBytesHandler extends Handler {
