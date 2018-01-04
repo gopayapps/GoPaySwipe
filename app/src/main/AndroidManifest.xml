@@ -29,6 +29,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".RegisterActivity"
+            android:label="@string/register_details" >
+        </activity>
+        <activity
             android:name=".BankActivity"
             android:label="@string/cashout_details" >
         </activity>

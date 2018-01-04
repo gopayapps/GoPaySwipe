@@ -30,8 +30,27 @@
 		<item>Steward Bank</item>
 		<item>ZB Bank Limited</item>
 	</string-array>
+
+	<string name="prompt_fname">Firstname</string>
+	<string name="prompt_lname">Lastname</string>
+	<string name="prompt_email">Email</string>
+	<string name="prompt_phone">Phone Number</string>
+	<string name="prompt_pin">Pin</string>
+	<string name="prompt_rpin">Repeat Pin</string>
+	<string name="action_register">Register</string>
+	<string name="action_login">Login</string>
+	<string name="action_login_short">Login</string>
+	<string name="error_invalid_email">This email address is not valid</string>
+	<string name="error_invalid_name">This name is not valid</string>
+	<string name="error_invalid_msisdn">This phone number is not valid</string>
+	<string name="error_invalid_pin">This pin is not valid</string>
+	<string name="error_incorrect_password">This password is incorrect</string>
+	<string name="error_field_required">This field is required</string>
+	<string name="error_pin_must_match">Pin and Pin Confirmation must match</string>
+
 	<string name="cashout_details">Cashout Details</string>
 	<string name="cashout_info">If you would like to withdraw funds received through this app, add a cashout option below</string>
+	<string name="register_details">Registration Details</string>
 	<string name="swipe_details">Receive Payment</string>
 	<string name="start_swipe">Process Payment</string>
 	<string name="cancel_swipe">Cancel</string>
@@ -47,4 +66,6 @@
 	<string name="transaction_details_header">Transaction Details</string>
 	<string name="result_title">Point of Sale API Result</string>
 	<string name="card_on_file_text">Card on File</string>
+
+
 </resources>
