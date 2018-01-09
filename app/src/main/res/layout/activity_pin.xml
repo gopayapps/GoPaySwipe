@@ -17,7 +17,8 @@
         android:layout_marginBottom="@dimen/vertical_space"
         android:layout_marginTop="@dimen/vertical_space"
         android:text="@string/label_transaction_summary"
-        android:textSize="24sp" />
+        android:textSize="@dimen/title_heading_size"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtAmountInfo"

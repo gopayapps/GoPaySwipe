@@ -72,5 +72,7 @@
 	<string name="prompt_transaction_amount">Enter Amount</string>
 	<string name="prompt_transaction_reference">Transaction Reference (Optional)</string>
     <string name="prompt_enter_amount">Enter Amount to Pay</string>
+	<string name="label_cashout_details">Cashout Details</string>
+	<string name="label_account_type">Select Account Type</string>
 
 </resources>

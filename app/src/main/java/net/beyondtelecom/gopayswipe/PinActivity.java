@@ -69,6 +69,7 @@ public class PinActivity extends AppCompatActivity {
 		public void onClick(View v) {
 			if (!isValidCardPin(edtCardPin.getText().toString())) {
 				edtCardPin.setError("This pin is not valid");
+				return;
 			}
 			getTransactionDetails().setCardPin(Integer.parseInt(edtCardPin.getText().toString()));
 		}
