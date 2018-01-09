@@ -10,6 +10,94 @@
               android:paddingTop="@dimen/activity_vertical_margin"
               tools:context=".PinActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/vertical_space"
+        android:layout_marginTop="@dimen/vertical_space"
+        android:text="@string/label_transaction_summary"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txtAmountInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="8sp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtTransactionReference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="8sp"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="15dip"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txtCardBytes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:inputType="none"
+        android:textColor="@color/colorAccent"
+        android:textIsSelectable="true"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="@string/label_enter_pin"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="15dip"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/edtCardPin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:inputType="numberPassword"
+        android:singleLine="true"
+        android:textStyle="bold" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCompleteTransaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:text="@string/action_complete_transaction"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnCancelTransaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Cancel" />
+
+    </LinearLayout>
 
 </LinearLayout>
 

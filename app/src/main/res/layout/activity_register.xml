@@ -95,8 +95,10 @@
                     android:layout_width="@dimen/activity_ui_items"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:backgroundTint="@color/colorPrimaryDark"
                     android:text="@string/action_register"
-                    android:textStyle="bold"/>
+                    android:textAllCaps="false"
+                    android:textStyle="bold" />
 
             </LinearLayout>
         </LinearLayout>

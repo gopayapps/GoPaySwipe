@@ -30,15 +30,19 @@
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/register_details" >
+            android:label="@string/title_register_details" >
+        </activity>
+        <activity
+            android:name=".PinActivity"
+            android:label="@string/title_pin_details" >
         </activity>
         <activity
             android:name=".BankActivity"
-            android:label="@string/cashout_details" >
+            android:label="@string/title_cashout_details" >
         </activity>
         <activity
             android:name=".ChargeActivity"
-            android:label="@string/swipe_details" >
+            android:label="@string/title_swipe" >
         </activity>
 
     </application>

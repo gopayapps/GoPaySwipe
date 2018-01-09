@@ -8,7 +8,7 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context=".SwipeActivity">
+              tools:context=".ChargeActivity">
 
 	<EditText
 		android:layout_width="match_parent"
@@ -18,7 +18,7 @@
 		android:id="@+id/edtEnterAmount"
 		android:layout_gravity="center_horizontal"
 		android:layout_marginTop="10dp"
-		android:hint="Enter Amount to Swipe"/>
+		android:hint="@string/prompt_enter_amount"/>
 
 	<Button
 		android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
 	<EditText
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:id="@+id/edtCardBytes"
+		android:id="@+id/txtCardBytes"
 		android:layout_gravity="center_horizontal"/>
 
 	<EditText

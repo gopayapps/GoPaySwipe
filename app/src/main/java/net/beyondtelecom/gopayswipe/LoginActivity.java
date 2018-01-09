@@ -124,9 +124,10 @@ public class LoginActivity extends AppCompatActivity {
 
 	public static UserDetails getUserDetails() {
 
-		userDetails = new UserDetails("Tsungai", "Kaviya", "263785107830",
-				"tsungai.kaviya@gmail.com", null, null);
-
+		if (userDetails == null) {
+			userDetails = new UserDetails("Tsungai", "Kaviya",
+				"263785107830","tsungai.kaviya@gmail.com", null, null);
+		}
 		return userDetails;
 	}
 

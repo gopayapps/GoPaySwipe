@@ -12,6 +12,8 @@ public class Validator
 	private static final Integer MAX_PASSWORD_LENGTH = 50;
 
     private static final Integer PIN_LEN = 4;
+    private static final Integer MIN_PIN_LEN = 4;
+    private static final Integer MAX_PIN_LEN = 6;
 
     private static final Integer MIN_NAME_LEN = 2;
     private static final Integer MAX_NAME_LEN = 50;
@@ -39,6 +41,11 @@ public class Validator
     public static boolean isValidPin(String pin)
     {
         return pin.matches("[0-9]{" + PIN_LEN +"}");
+    }
+
+    public static boolean isValidCardPin(String pin)
+    {
+        return pin.matches("[0-9]{" + MIN_PIN_LEN + "," + MAX_PIN_LEN +"}");
     }
 
     public static boolean isValidMsisdn(String msisdn, String countryCodePrefix) {
