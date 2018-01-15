@@ -11,6 +11,10 @@ public class CashoutDetails {
 	private String accountPhone;
 	private String accountEmail;
 
+	public CashoutDetails(AccountType accountType) {
+		this.accountType = accountType;
+	}
+
 	public AccountType getAccountType() {
 		return accountType;
 	}

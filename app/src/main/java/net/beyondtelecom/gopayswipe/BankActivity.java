@@ -8,9 +8,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
+import net.beyondtelecom.gopayswipe.common.CashoutDetails;
+import net.beyondtelecom.gopayswipe.common.Validator;
+
 import static net.beyondtelecom.gopayswipe.LoginActivity.getLoginActivity;
+import static net.beyondtelecom.gopayswipe.common.AccountType.MOBILE_BANK_ACCOUNT;
 
 /**
  * A login screen that offers login via email/password and via Google+ sign in.
@@ -30,6 +35,7 @@ public class BankActivity extends AppCompatActivity {
 	protected Button btnSkipCashout;
 	protected Button btnAddMobileCashout;
 	protected Button btnAddBankCashout;
+	protected EditText edtCashoutMobileNumber;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,8 @@ public class BankActivity extends AppCompatActivity {
 		btnSkipCashout = (Button) findViewById(R.id.btnSkipCashout);
 		btnAddMobileCashout = (Button) findViewById(R.id.btnAddMobileCashout);
 		btnAddBankCashout = (Button) findViewById(R.id.btnAddBankCashout);
+		edtCashoutMobileNumber = (EditText) findViewById(R.id.edtCashoutMobileNumber);
+
 		btnSkipCashout.setOnClickListener(new SkipCashoutListener());
 		btnAddMobileCashout.setOnClickListener(new AddMobileCashoutListener());
 		btnAddBankCashout.setOnClickListener(new AddBankCashoutListener());
@@ -100,6 +108,21 @@ public class BankActivity extends AppCompatActivity {
 	class AddMobileCashoutListener implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
+
+			edtCashoutMobileNumber.setError(null);
+			CashoutDetails mobileCashout = new CashoutDetails(MOBILE_BANK_ACCOUNT);
+
+			String msisdn = edtCashoutMobileNumber.getText().toString();
+			if (!Validator.isValidMsisdn(msisdn)) {
+				edtCashoutMobileNumber.setError("Mobile number is not valid");
+				edtCashoutMobileNumber.requestFocus();
+				return;
+			}
+
+			mobileCashout.setAccountNumber(edtCashoutMobileNumber.getText().toString());
+			mobileCashout.setAccountNumber(msisdn);
+			mobileCashout.setAccountPhone( msisdn);
+
 			Intent swipeIntent = new Intent(getLoginActivity(), ChargeActivity.class);
 			startActivity(swipeIntent);
 		}

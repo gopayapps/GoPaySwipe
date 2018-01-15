@@ -21,31 +21,32 @@ public class Validator
     private static final Integer MIN_UNAME_LEN = 2;
     private static final Integer MAX_UNAME_LEN = 50;
 
+    private static final Integer MIN_CARD_LEN = 13;
+    private static final Integer MAX_CARD_LEN = 19;
+
 	public static boolean isNumeric(Object testObject) {
         if (testObject == null) return false;
         try { Float.parseFloat(String.valueOf(testObject)); return true; }
         catch (Exception e) { return false; }
     }
 
-	public static boolean isValidEmail(String emailAddress)
-	{
-		return !isNullOrEmpty(emailAddress) && emailAddress.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$");
+	public static boolean isValidEmail(String emailAddress) {
+		return !isNullOrEmpty(emailAddress) &&
+                emailAddress.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$");
 	}
 
 
-	public static boolean isValidPassword(String password)
-	{
-		return password.matches("[a-zA-Z0-9<>.!@();:#$%&*+/=?^_{|}~-]{" + MIN_PASSWORD_LENGTH + "," + MAX_PASSWORD_LENGTH +"}");
+	public static boolean isValidPassword(String password) {
+		return !isNullOrEmpty(password) &&
+                password.matches("[a-zA-Z0-9<>.!@();:#$%&*+/=?^_{|}~-]{" + MIN_PASSWORD_LENGTH + "," + MAX_PASSWORD_LENGTH +"}");
 	}
 
-    public static boolean isValidPin(String pin)
-    {
-        return pin.matches("[0-9]{" + PIN_LEN +"}");
+    public static boolean isValidPin(String pin) {
+        return !isNullOrEmpty(pin) && pin.matches("[0-9]{" + PIN_LEN +"}");
     }
 
-    public static boolean isValidCardPin(String pin)
-    {
-        return pin.matches("[0-9]{" + MIN_PIN_LEN + "," + MAX_PIN_LEN +"}");
+    public static boolean isValidCardPin(String pin) {
+        return !isNullOrEmpty(pin) && pin.matches("[0-9]{" + MIN_PIN_LEN + "," + MAX_PIN_LEN +"}");
     }
 
     public static boolean isValidMsisdn(String msisdn, String countryCodePrefix) {
@@ -56,14 +57,23 @@ public class Validator
 		return string == null || string.equals("");
 	}
 
-	public static boolean isValidMsisdn(String msisdn)          {   return msisdn.matches("^(0)[0-9]{9}");          }
+	public static boolean isValidMsisdn(String msisdn) {
+	    return !isNullOrEmpty(msisdn) && msisdn.matches("^(0)[0-9]{9}");
+	}
 
     public static boolean isValidName(String name) {
-        return name.matches("[a-zA-Z]{" + MIN_NAME_LEN + "," + MAX_NAME_LEN + "}");
+        return !isNullOrEmpty(name) &&
+                name.matches("[a-zA-Z]{" + MIN_NAME_LEN + "," + MAX_NAME_LEN + "}");
     }
 
     public static boolean isValidUsername(String username) {
-        return username.matches("[a-zA-Z0-9-_.]{" + MIN_UNAME_LEN + "," + MAX_UNAME_LEN + "}");
+        return !isNullOrEmpty(username) &&
+                username.matches("[a-zA-Z0-9-_.]{" + MIN_UNAME_LEN + "," + MAX_UNAME_LEN + "}");
+    }
+
+    public static boolean isValidCardNumber(String cardNum) {
+        return !isNullOrEmpty(cardNum) &&
+                cardNum.matches("[0-9]{" + MIN_CARD_LEN + "," + MAX_CARD_LEN + "}");
     }
 
 }

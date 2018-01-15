@@ -1,9 +1,12 @@
 package net.beyondtelecom.gopayswipe;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,17 +15,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.square.MagRead;
 import com.square.MagReadListener;
 
+import net.beyondtelecom.gopayswipe.common.CardType;
 import net.beyondtelecom.gopayswipe.common.ReferenceGenerator;
 import net.beyondtelecom.gopayswipe.common.TransactionDetails;
 
 import java.math.BigDecimal;
 
-import static net.beyondtelecom.gopayswipe.common.Validator.*;
+import static net.beyondtelecom.gopayswipe.common.CardType.UNKNOWN;
+import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
+import static net.beyondtelecom.gopayswipe.common.Validator.isNumeric;
 
 public class ChargeActivity extends AppCompatActivity {
 	private Spinner chooseCurrencyType;
@@ -177,11 +182,13 @@ public class ChargeActivity extends AppCompatActivity {
 		public void handleMessage(Message msg) {
 			String bytes = (String)msg.obj;
 			String cardNumber = getCardNumber(bytes);
-			if (cardNumber == null) {
-				return;
+			if (CardType.detect(cardNumber) == UNKNOWN) {
+				getTransactionDetails().setCardNumber(cardNumber);
+				showSwipeError(cardNumber);
+			} else {
+				getTransactionDetails().setCardNumber(cardNumber);
+				completeReading();
 			}
-			getTransactionDetails().setCardNumber(cardNumber);
-			completeReading();
 		}
 
 		private String getCardNumber(String bytes) {
@@ -193,7 +200,31 @@ public class ChargeActivity extends AppCompatActivity {
 			bytes = bytes.substring(1);						//remove initial ;
 			return bytes.substring(0, bytes.indexOf('='));	//remove everything after =
 		}
+	}
 
+	public void showSwipeError(String cardNumber) {
+		final AlertDialog.Builder builder;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+		} else {
+			builder = new AlertDialog.Builder(this);
+		}
+		builder.setTitle("Try Again")
+			.setMessage("Card number '" + cardNumber + "' may not be valid. Try Again?")
+			.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					startReading();
+					dialog.dismiss();
+				}
+			})
+			.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					completeReading();
+				}
+			})
+			.setIcon(android.R.drawable.ic_dialog_alert)
+			.show();
 
 	}
 

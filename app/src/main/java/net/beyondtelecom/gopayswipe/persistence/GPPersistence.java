@@ -57,8 +57,8 @@ public class GPPersistence extends SQLiteOpenHelper {
 				"online_email VARCHAR(50))");
 
 		db.execSQL("INSERT INTO " + CASHOUT_TYPE + " VALUES (0," + MOBILE_BANK_ACCOUNT.name() + ")");
-		db.execSQL("INSERT INTO " + CASHOUT_TYPE + " VALUES (0," + BANK_ACCOUNT.name() + ")");
-		db.execSQL("INSERT INTO " + CASHOUT_TYPE + " VALUES (0," + ONLINE_BANK_ACCOUNT.name() + ")");
+		db.execSQL("INSERT INTO " + CASHOUT_TYPE + " VALUES (1," + BANK_ACCOUNT.name() + ")");
+		db.execSQL("INSERT INTO " + CASHOUT_TYPE + " VALUES (2," + ONLINE_BANK_ACCOUNT.name() + ")");
 
     }
 
@@ -78,12 +78,8 @@ public class GPPersistence extends SQLiteOpenHelper {
 		onCreate(db);
     }
 
-	private SQLiteDatabase getStreetsWritableDatabase()
-	{
-		if (sqlLiteDatabase == null)
-		{
-			sqlLiteDatabase = getWritableDatabase();
-		}
+	private SQLiteDatabase getGPWritableDatabase() {
+		if (sqlLiteDatabase == null) { sqlLiteDatabase = getWritableDatabase(); }
 		return sqlLiteDatabase;
 	}
 }
