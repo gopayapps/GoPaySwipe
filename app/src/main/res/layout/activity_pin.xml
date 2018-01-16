@@ -8,7 +8,7 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context=".PinActivity">
+              tools:activity=".PinActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,6 +75,7 @@
         android:layout_gravity="center_horizontal"
         android:inputType="numberPassword"
         android:singleLine="true"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -8,7 +8,7 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context=".BankActivity">
+              tools:activity=".BankActivity">
 
 	<ScrollView
 		android:id="@+id/bank_details_form"
@@ -42,6 +42,7 @@
 					android:gravity="center_horizontal"
 					android:padding="10dp"
 					android:text="@string/cashout_info"
+					android:textAlignment="center"
 					android:textColor="#254117"
 					android:textSize="15dip"
 					android:textStyle="bold" />
@@ -59,7 +60,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:gravity="center_horizontal"
-					android:paddingBottom="5dp"
+					android:paddingBottom="15dp"
 					android:text="@string/label_cashout_details"
 					android:textSize="@dimen/title_heading_size"
 					android:textStyle="bold" />
@@ -87,12 +88,11 @@
 				<!--  Add Button -->
 				<Button
 					android:id="@+id/btnSkipCashout"
+					style="@style/Widget.AppCompat.Button.Colored"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					style="@style/Widget.AppCompat.Button.Colored"
 					android:backgroundTint="@color/colorPrimaryDark"
 					android:text="Skip Adding Cashout Option"
-					android:textAllCaps="false"
 					android:textStyle="bold" />
 
 			</LinearLayout>
@@ -121,8 +121,9 @@
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:hint="Mobile Number"
+					android:inputType="number"
 					android:maxLength="10"
-					android:inputType="number" />
+					android:textSize="16sp" />
 
 				<!--  Add Button -->
 				<Button
@@ -162,7 +163,7 @@
 
 				<Spinner
 					android:id="@+id/spnChooseBank"
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="5dp" />
 
@@ -171,7 +172,8 @@
 					android:id="@+id/registerBankAccountName"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:hint="Account Name" />
+					android:hint="Account Name"
+					android:textSize="16sp" />
 
 				<!--  Bank Account Number TextField -->
 				<EditText
@@ -179,7 +181,8 @@
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:hint="Bank Account Number"
-					android:numeric="integer" />
+					android:numeric="integer"
+					android:textSize="16sp" />
 
 				<!--  Msisdn TextField -->
 				<EditText
@@ -187,7 +190,8 @@
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:hint="Phone Number"
-					android:numeric="integer" />
+					android:numeric="integer"
+					android:textSize="16sp" />
 
 				<!--  Add Button -->
 				<Button

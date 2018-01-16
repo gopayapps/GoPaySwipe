@@ -63,7 +63,7 @@ public class Validator
 
     public static boolean isValidName(String name) {
         return !isNullOrEmpty(name) &&
-                name.matches("[a-zA-Z]{" + MIN_NAME_LEN + "," + MAX_NAME_LEN + "}");
+                name.matches("[a-zA-Z- ]{" + MIN_NAME_LEN + "," + MAX_NAME_LEN + "}");
     }
 
     public static boolean isValidUsername(String username) {

@@ -83,4 +83,6 @@ public enum BTResponseCode implements Serializable
 	public int getCode() { return code; }
 
 	public String getMessage() { return message; }
+
+	public BTResponseCode setMessage(String message) { this.message = message; return this; }
 }

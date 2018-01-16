@@ -31,6 +31,7 @@
 		<item>ZB Bank Limited</item>
 	</string-array>
 
+	<string name="prompt_username">Username</string>
 	<string name="prompt_fname">Firstname</string>
 	<string name="prompt_lname">Lastname</string>
 	<string name="prompt_email">Email</string>
@@ -45,8 +46,9 @@
 	<string name="action_cancel">Cancel</string>
 	<string name="action_start_swipe">Process Payment</string>
 
-	<string name="error_invalid_email">This email address is not valid</string>
+	<string name="error_invalid_username">This username is not valid</string>
 	<string name="error_invalid_name">This name is not valid</string>
+	<string name="error_invalid_email">This email address is not valid</string>
 	<string name="error_invalid_msisdn">This phone number is not valid</string>
 	<string name="error_invalid_pin">This pin is not valid</string>
 	<string name="error_invalid_amount">The requested amount is not valid</string>

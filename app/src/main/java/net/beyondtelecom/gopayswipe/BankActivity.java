@@ -26,8 +26,7 @@ import static net.beyondtelecom.gopayswipe.common.AccountType.MOBILE_BANK_ACCOUN
  * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
  */
 public class BankActivity extends AppCompatActivity {
-
-	protected Activity bankActivity;
+	protected static Activity bankActivity;
 	protected View mobileDetailsLayout;
 	protected View bankDetailsLayout;
 	protected Spinner chooseCashoutType;
@@ -57,6 +56,10 @@ public class BankActivity extends AppCompatActivity {
 		btnAddBankCashout.setOnClickListener(new AddBankCashoutListener());
 
 		populateBankAccounts();
+	}
+
+	public static Activity getBankActivity() {
+		return bankActivity;
 	}
 
 	private void populateBankAccounts() {

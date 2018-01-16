@@ -8,16 +8,17 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context=".LoginActivity">
+              tools:activity=".LoginActivity">
 
 	<!-- Login progress -->
 	<ProgressBar
-		android:id="@+id/login_progress"
+		android:id="@+id/prgLogin"
 		style="?android:attr/progressBarStyleLarge"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginBottom="8dp"
-		android:visibility="gone"/>
+		android:indeterminate="true"
+		android:visibility="gone" />
 
 	<ScrollView
 		android:id="@+id/login_form"
@@ -34,8 +35,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="fill_parent"
 				android:layout_gravity="center_horizontal"
-				android:layout_marginLeft="15dp"
-				android:layout_marginRight="15dp"
+				android:layout_margin="15dp"
 				android:src="@drawable/gopay_logo_transparent" />
 
 			<LinearLayout
@@ -52,11 +52,25 @@
 					android:drawableTop="@drawable/login"
 					android:inputType="none"
 					android:textColor="@color/colorAccent"
-					android:textIsSelectable="true"
+					android:textIsSelectable="false"
 					android:visibility="visible" />
 
 				<EditText
-					android:id="@+id/txtPin"
+					android:id="@+id/edtUsername"
+					android:layout_width="@dimen/activity_ui_items"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:drawableTop="@drawable/login"
+					android:hint="@string/prompt_username"
+					android:imeActionLabel="@string/action_login_short"
+					android:imeOptions="actionUnspecified"
+					android:inputType="text"
+					android:maxLines="1"
+					android:singleLine="true"
+					android:visibility="gone" />
+
+				<EditText
+					android:id="@+id/edtPin"
 					android:layout_width="@dimen/activity_ui_items"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
@@ -65,7 +79,8 @@
 					android:imeOptions="actionUnspecified"
 					android:inputType="numberPassword"
 					android:maxLines="1"
-					android:singleLine="true" />
+					android:singleLine="true"
+					android:textSize="16sp" />
 
 				<Button
 					android:id="@+id/btnLogin"

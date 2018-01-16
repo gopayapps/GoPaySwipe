@@ -5,21 +5,31 @@ package net.beyondtelecom.gopayswipe.common;
  */
 public class UserDetails {
 
+	String username;
 	String firstName;
 	String lastName;
 	String msisdn;
 	String email;
 	String pin;
-	String rpin;
 
-	public UserDetails(String firstName, String lastName, String msisdn, String email,
-					   String pin, String rpin) {
+	public UserDetails() {}
+
+	public UserDetails(String username, String firstName, String lastName, String msisdn,
+					   String email, String pin) {
+		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.msisdn = msisdn;
 		this.email = email;
 		this.pin = pin;
-		this.rpin = rpin;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getFirstName() {
@@ -60,14 +70,6 @@ public class UserDetails {
 
 	public void setPin(String pin) {
 		this.pin = pin;
-	}
-
-	public String getRpin() {
-		return rpin;
-	}
-
-	public void setRpin(String rpin) {
-		this.rpin = rpin;
 	}
 }
 
