@@ -89,6 +89,8 @@
 					android:id="@+id/btnSkipCashout"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
+					style="@style/Widget.AppCompat.Button.Colored"
+					android:backgroundTint="@color/colorPrimaryDark"
 					android:text="Skip Adding Cashout Option"
 					android:textAllCaps="false"
 					android:textStyle="bold" />
@@ -127,6 +129,8 @@
 					android:id="@+id/btnAddMobileCashout"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
+					style="@style/Widget.AppCompat.Button.Colored"
+					android:backgroundTint="@color/colorPrimaryDark"
 					android:text="Add Mobile Bank Account"
 					android:textAllCaps="false"
 					android:textStyle="bold" />
@@ -190,6 +194,8 @@
 					android:id="@+id/btnAddBankCashout"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
+					style="@style/Widget.AppCompat.Button.Colored"
+					android:backgroundTint="@color/colorPrimaryDark"
 					android:text="Add Bank Account"
 					android:textAllCaps="false"
 					android:textStyle="bold" />

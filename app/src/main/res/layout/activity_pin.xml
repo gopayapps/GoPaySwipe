@@ -87,6 +87,7 @@
             android:id="@+id/btnCompleteTransaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:backgroundTint="@color/colorPrimaryDark"
             android:text="@string/action_complete_transaction"
             android:textStyle="bold" />
@@ -95,6 +96,7 @@
             android:id="@+id/btnCancelTransaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:backgroundTint="@color/colorPrimary"
             android:text="Cancel" />
 

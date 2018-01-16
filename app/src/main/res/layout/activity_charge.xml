@@ -75,6 +75,7 @@
 					android:id="@+id/btnStartSwipe"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					style="@style/Widget.AppCompat.Button.Colored"
 					android:backgroundTint="@color/colorPrimaryDark"
 					android:text="@string/action_start_swipe"
 					android:textAllCaps="false"
@@ -84,7 +85,8 @@
 					android:id="@+id/btnCancelTrans"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:backgroundTint="@color/colorPrimary"
+					style="@style/Widget.AppCompat.Button.Colored"
+					android:backgroundTint="@color/colorPrimaryDark"
 					android:text="@string/action_cancel"
 					android:visibility="gone" />
 

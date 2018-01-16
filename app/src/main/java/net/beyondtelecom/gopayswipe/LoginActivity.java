@@ -11,14 +11,17 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.beyondtelecom.gopayswipe.common.UserDetails;
 import net.beyondtelecom.gopayswipe.common.Validator;
+import net.beyondtelecom.gopayswipe.server.HTTPBackgrounTask;
+
+import java.util.Hashtable;
 
 import static android.view.View.VISIBLE;
 import static java.lang.String.format;
+import static net.beyondtelecom.gopayswipe.server.HTTPBackgrounTask.TASK_TYPE.POST;
 
 /**
  * A login screen that offers login via email/password and via Google+ sign in.
@@ -114,7 +117,24 @@ public class LoginActivity extends AppCompatActivity {
 
 		txtPin.setError(null);
 
+		Hashtable loginParams = new Hashtable();
+		loginParams.put("username", getUserDetails().getEmail());
+		loginParams.put("password", getUserDetails().getPin());
+		loginParams.put("username", getUserDetails().getEmail());
+
+
 		if (isValidInputs()) {
+			HTTPBackgrounTask loginTask = new HTTPBackgrounTask(POST, HTTPBackgrounTask.SESSION_URL, loginParams);
+			loginTask.execute();
+
+			while (loginTask.isRunning()) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+
 			Intent swipeIntent = new Intent(loginActivity, ChargeActivity.class);
 			startActivity(swipeIntent);
 		}

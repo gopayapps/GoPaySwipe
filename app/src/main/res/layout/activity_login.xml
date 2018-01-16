@@ -70,21 +70,21 @@
 				<Button
 					android:id="@+id/btnLogin"
 					style="@style/Widget.AppCompat.Button.Colored"
+					android:backgroundTint="@color/colorPrimaryDark"
 					android:layout_width="@dimen/activity_ui_items"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
 					android:layout_marginTop="16dp"
-					android:backgroundTint="@color/colorPrimaryDark"
 					android:text="@string/action_login"
 					android:textStyle="bold" />
 
 				<Button
 					android:id="@+id/btnRegister"
 					style="@style/Widget.AppCompat.Button.Colored"
+					android:backgroundTint="@color/colorPrimary"
 					android:layout_width="@dimen/activity_ui_items"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
-					android:backgroundTint="@color/colorPrimary"
 					android:text="@string/action_register" />
 
 			</LinearLayout>

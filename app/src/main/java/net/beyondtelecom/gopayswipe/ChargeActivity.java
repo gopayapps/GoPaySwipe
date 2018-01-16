@@ -25,11 +25,14 @@ import net.beyondtelecom.gopayswipe.common.TransactionDetails;
 
 import java.math.BigDecimal;
 
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
 import static net.beyondtelecom.gopayswipe.common.CardType.UNKNOWN;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNumeric;
 
 public class ChargeActivity extends AppCompatActivity {
+	private ChargeActivity chargeActivity;
 	private Spinner chooseCurrencyType;
 	private UpdateBytesHandler updateBytesHandler;
 	private EditText edtTransactionAmount;
@@ -44,6 +47,7 @@ public class ChargeActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_charge);
+		chargeActivity = this;
 
 		chooseCurrencyType = (Spinner) findViewById(R.id.spnChooseCurrencyType);
 		startBtn = (Button)findViewById(R.id.btnStartSwipe);
@@ -78,6 +82,9 @@ public class ChargeActivity extends AppCompatActivity {
 //		updateBitsHandler = new UpdateBitsHandler();
 
 		populateCurrencies();
+	}
+	public ChargeActivity getChargeActivity() {
+		return chargeActivity;
 	}
 
 	public static TransactionDetails getTransactionDetails() {
@@ -192,6 +199,8 @@ public class ChargeActivity extends AppCompatActivity {
 		}
 
 		private String getCardNumber(String bytes) {
+
+			makeText(getChargeActivity(), "Card read error: '" + bytes + "'. Try Again!", LENGTH_SHORT).show();
 
 			if (isNullOrEmpty(bytes) || bytes.length() < 6 || !bytes.contains("=")) {
 				return null;

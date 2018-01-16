@@ -91,10 +91,10 @@
 
                 <Button
                     android:id="@+id/btnRegRegister"
-                    style="?android:textAppearanceSmall"
                     android:layout_width="@dimen/activity_ui_items"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    style="@style/Widget.AppCompat.Button.Colored"
                     android:backgroundTint="@color/colorPrimaryDark"
                     android:text="@string/action_register"
                     android:textAllCaps="false"
