@@ -29,6 +29,10 @@
             android:label="@string/title_register_details" >
         </activity>
         <activity
+            android:name=".ReRegisterActivity"
+            android:label="@string/title_reregister_details" >
+        </activity>
+        <activity
             android:name=".PinActivity"
             android:label="@string/title_pin_details" >
         </activity>

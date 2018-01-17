@@ -37,7 +37,9 @@
 	<string name="prompt_email">Email</string>
 	<string name="prompt_phone">Phone Number</string>
 	<string name="prompt_pin">Pin</string>
+	<string name="prompt_new_pin">Pin</string>
 	<string name="prompt_rpin">Repeat Pin</string>
+	<string name="prompt_password">Account Password</string>
 
 	<string name="action_register">Register</string>
 	<string name="action_login">Login</string>
@@ -51,6 +53,7 @@
 	<string name="error_invalid_email">This email address is not valid</string>
 	<string name="error_invalid_msisdn">This phone number is not valid</string>
 	<string name="error_invalid_pin">This pin is not valid</string>
+	<string name="error_invalid_password">This pin is not valid</string>
 	<string name="error_invalid_amount">The requested amount is not valid</string>
 	<string name="error_incorrect_password">This password is incorrect</string>
 	<string name="error_field_required">This field is required</string>
@@ -59,10 +62,12 @@
 	<string name="title_swipe">Receive Payment</string>
 	<string name="title_pin_details">Complete Transaction</string>
 	<string name="title_register_details">Registration Details</string>
+	<string name="title_reregister_details">Register Existing User</string>
 	<string name="title_cashout_details">Cashout Details</string>
 
 
-	<string name="cashout_info">If you would like to withdraw funds received through this app, add a cashout option below</string>
+	<string name="info_cashout">If you would like to withdraw funds received through this app, add a cashout option below.</string>
+	<string name="info_reregister">An existing account exists with those details. Authenticate to register as the user below.</string>
 	<string name="processing_info">Processing transaction for:</string>
 	<string name="label_enter_pin">Enter pin to complete transaction</string>
 

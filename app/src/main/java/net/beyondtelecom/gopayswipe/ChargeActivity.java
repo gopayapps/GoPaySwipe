@@ -19,17 +19,17 @@ import android.widget.Spinner;
 import com.square.MagRead;
 import com.square.MagReadListener;
 
-import net.beyondtelecom.gopayswipe.common.CardType;
 import net.beyondtelecom.gopayswipe.common.ReferenceGenerator;
-import net.beyondtelecom.gopayswipe.common.TransactionDetails;
+import net.beyondtelecom.gopayswipe.dto.CardType;
+import net.beyondtelecom.gopayswipe.dto.TransactionDetails;
 
 import java.math.BigDecimal;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
-import static net.beyondtelecom.gopayswipe.common.CardType.UNKNOWN;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNumeric;
+import static net.beyondtelecom.gopayswipe.dto.CardType.UNKNOWN;
 
 public class ChargeActivity extends AppCompatActivity {
 	private ChargeActivity chargeActivity;

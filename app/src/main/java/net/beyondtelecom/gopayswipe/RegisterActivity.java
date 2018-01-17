@@ -15,20 +15,28 @@ import android.widget.TextView;
 
 import net.beyondtelecom.gopayswipe.common.ActivityCommon;
 import net.beyondtelecom.gopayswipe.common.BTResponseCode;
-import net.beyondtelecom.gopayswipe.common.UserDetails;
-import net.beyondtelecom.gopayswipe.common.Validator;
+import net.beyondtelecom.gopayswipe.common.BTResponseObject;
+import net.beyondtelecom.gopayswipe.dto.UserDetails;
 import net.beyondtelecom.gopayswipe.persistence.GPPersistence;
 import net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Hashtable;
 import java.util.concurrent.ExecutionException;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
-import static net.beyondtelecom.gopayswipe.BankActivity.getBankActivity;
-import static net.beyondtelecom.gopayswipe.LoginActivity.getLoginActivity;
 import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getDeviceIMEI;
 import static net.beyondtelecom.gopayswipe.common.BTResponseCode.SUCCESS;
+import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
+import static net.beyondtelecom.gopayswipe.common.Validator.isValidEmail;
+import static net.beyondtelecom.gopayswipe.common.Validator.isValidMsisdn;
+import static net.beyondtelecom.gopayswipe.common.Validator.isValidName;
+import static net.beyondtelecom.gopayswipe.common.Validator.isValidPin;
+import static net.beyondtelecom.gopayswipe.common.Validator.isValidUsername;
+import static net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask.TASK_TYPE.GET;
 import static net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask.TASK_TYPE.POST;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -44,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
 	private EditText txtRegPin;
 	private EditText txtRegRPin;
 	private Button btnRegRegister;
+	private static UserDetails previousRegDetails;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
 		String pin = txtRegPin.getText().toString();
 		String rpin = txtRegRPin.getText().toString();
 
-		if (!TextUtils.isEmpty(username) && !Validator.isValidUsername(username)) {
+		if (!TextUtils.isEmpty(username) && !isValidUsername(username)) {
 			txtRegUsername.setError(getString(R.string.error_invalid_username));
 			txtRegUsername.requestFocus();
 			return false;
@@ -92,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
 			return false;
 		}
 
-		if (!TextUtils.isEmpty(fname) && !Validator.isValidName(fname)) {
+		if (!TextUtils.isEmpty(fname) && !isValidName(fname)) {
 			txtRegFirstname.setError(getString(R.string.error_invalid_name));
 			txtRegFirstname.requestFocus();
 			return false;
@@ -102,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
 			return false;
 		}
 
-		if (!TextUtils.isEmpty(lname) && !Validator.isValidName(lname)) {
+		if (!TextUtils.isEmpty(lname) && !isValidName(lname)) {
 			txtRegLastname.setError(getString(R.string.error_invalid_name));
 			txtRegLastname.requestFocus();
 			return false;
@@ -112,7 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
 			return false;
 		}
 
-		if (!TextUtils.isEmpty(msisdn) && !Validator.isValidMsisdn(msisdn)) {
+		if (!TextUtils.isEmpty(msisdn) && !isValidMsisdn(msisdn)) {
 			txtRegMsisdn.setError(getString(R.string.error_invalid_msisdn));
 			txtRegMsisdn.requestFocus();
 			return false;
@@ -122,13 +131,13 @@ public class RegisterActivity extends AppCompatActivity {
 			return false;
 		}
 
-		if (!TextUtils.isEmpty(email) && !Validator.isValidEmail(email)) {
+		if (!TextUtils.isEmpty(email) && !isValidEmail(email)) {
 			txtRegEmail.setError(getString(R.string.error_invalid_email));
 			txtRegEmail.requestFocus();
 			return false;
 		}
 
-		if (!TextUtils.isEmpty(pin) && !Validator.isValidPin(pin)) {
+		if (!TextUtils.isEmpty(pin) && !isValidPin(pin)) {
 			txtRegPin.setError(getString(R.string.error_invalid_pin));
 			txtRegPin.requestFocus();
 			return false;
@@ -138,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
 			return false;
 		}
 
-		if (!TextUtils.isEmpty(rpin) && !Validator.isValidPin(rpin)) {
+		if (!TextUtils.isEmpty(rpin) && !isValidPin(rpin)) {
 			txtRegRPin.setError(getString(R.string.error_invalid_pin));
 			txtRegRPin.requestFocus();
 			return false;
@@ -153,6 +162,10 @@ public class RegisterActivity extends AppCompatActivity {
 		}
 
 		return true;
+	}
+
+	public static UserDetails getPreviousRegDetails() {
+		return previousRegDetails;
 	}
 
 
@@ -193,22 +206,26 @@ public class RegisterActivity extends AppCompatActivity {
 			runOnUiThread(new Runnable() {
 				public void run() {
 
-					BTResponseCode registerResponse;
+					BTResponseObject registerResponse;
 					try {
 						registerResponse = registerTask.execute().get();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
-						registerResponse = BTResponseCode.GENERAL_ERROR.setMessage("Registration interrupted");
+						registerResponse = new BTResponseObject(
+							BTResponseCode.GENERAL_ERROR.setMessage("Registration interrupted")
+						);
 					} catch (ExecutionException e) {
 						e.printStackTrace();
-						registerResponse = BTResponseCode.GENERAL_ERROR.setMessage("Registration failed: " + e.getMessage());
+						registerResponse = new BTResponseObject(
+							BTResponseCode.GENERAL_ERROR.setMessage("Registration failed: " + e.getMessage())
+						);
 					}
 
 					final String responseMsg = registerResponse.getMessage();
 
 					Log.i(TAG, "Registration Response: " + responseMsg);
 
-					if (registerResponse.equals(SUCCESS)) {
+					if (registerResponse.getResponseCode().equals(SUCCESS)) {
 						UserDetails newUserDetails = new UserDetails(
 							txtRegUsername.getText().toString(),
 							txtRegFirstname.getText().toString(),
@@ -217,17 +234,31 @@ public class RegisterActivity extends AppCompatActivity {
 							txtRegEmail.getText().toString(),
 							txtRegPin.getText().toString()
 						);
-						GPPersistence goPayDB = LoginActivity.getLoginActivity().getGoPayDB();
+						GPPersistence goPayDB = LoginActivity.getGoPayDB();
 						goPayDB.setUserDetails(newUserDetails);
 						finish();
-						Intent bankIntent = new Intent(getLoginActivity(), BankActivity.class);
+						Intent bankIntent = new Intent(registerActivity, BankActivity.class);
 						startActivity(bankIntent);
 						runOnUiThread(new Runnable() {
 							public void run() {
-								makeText(getBankActivity(), "Registration successful.", LENGTH_LONG).show();
+								makeText(registerActivity, "Registration successful.", LENGTH_LONG).show();
 							}
 						});
-					} else {
+					}
+//					else if (registerResponse.getResponseCode().equals(PREVIOUS_EMAIL_FOUND) ||
+//							   registerResponse.getResponseCode().equals(PREVIOUS_MSISDN_FOUND)) {
+//
+//						runOnUiThread(new Runnable() {
+//							public void run() { makeText(registerActivity, responseMsg, LENGTH_LONG).show(); }
+//						});
+//
+//						UserDetails previousDetails = getPreviousAccountDetails();
+//
+//						Intent reRegisterIntent = new Intent(registerActivity, ReRegisterActivity.class);
+//						startActivity(reRegisterIntent);
+//
+//					}
+					else {
 						runOnUiThread(new Runnable() {
 							public void run() { makeText(registerActivity, responseMsg, LENGTH_LONG).show(); }
 						});
@@ -235,5 +266,62 @@ public class RegisterActivity extends AppCompatActivity {
 				}
 			});
 		}
+	}
+
+	private UserDetails getPreviousAccountDetails() {
+
+		previousRegDetails = null;
+
+		final Hashtable searchParams = new Hashtable<String, String>();
+
+		searchParams.put("msisdn", txtRegMsisdn.getText().toString());
+
+		if (!isNullOrEmpty(txtRegEmail.getText().toString())) {
+			searchParams.put("email", txtRegEmail.getText().toString());
+		}
+
+		final HTTPBackgroundTask searchTask = new HTTPBackgroundTask(
+			this, GET, HTTPBackgroundTask.USER_URL, searchParams
+		);
+
+		runOnUiThread(new Runnable() {
+			public void run() {
+
+				BTResponseObject searchResponse;
+				try {
+					searchResponse = searchTask.execute().get();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					searchResponse = new BTResponseObject(
+						BTResponseCode.GENERAL_ERROR.setMessage("Registration interrupted")
+					);
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+					searchResponse = new BTResponseObject(
+						BTResponseCode.GENERAL_ERROR.setMessage("Registration failed: " + e.getMessage())
+					);
+				}
+
+				final String responseMsg = searchResponse.getMessage();
+
+				Log.i(TAG, "Registration Response: " + responseMsg);
+
+				if (searchResponse.equals(SUCCESS)) {
+
+					try {
+						JSONObject responseJSON = new JSONObject((String) searchResponse.getResponseObject());
+
+						Log.i(TAG, (String) searchResponse.getResponseObject());
+
+						previousRegDetails = new UserDetails();
+
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+
+				}
+			}
+		});
+		return previousRegDetails;
 	}
 }

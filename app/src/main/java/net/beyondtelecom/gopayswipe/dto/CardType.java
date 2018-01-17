@@ -1,4 +1,4 @@
-package net.beyondtelecom.gopayswipe.common;
+package net.beyondtelecom.gopayswipe.dto;
 
 /**
  * Created by Tich on 1/15/2018.

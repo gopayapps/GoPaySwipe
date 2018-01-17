@@ -1,12 +1,15 @@
-package net.beyondtelecom.gopayswipe.common;
+package net.beyondtelecom.gopayswipe.dto;
 
 /**
  * Created by Tich on 1/2/2018.
  */
 public class CashoutDetails {
+
 	private AccountType accountType;
+	private BankType bankType;
 	private String accountNumber;
 	private String accountBranch;
+	private String accountNickname;
 	private String accountName;
 	private String accountPhone;
 	private String accountEmail;
@@ -23,6 +26,14 @@ public class CashoutDetails {
 		this.accountType = accountType;
 	}
 
+	public BankType getBankType() {
+		return bankType;
+	}
+
+	public void setBankType(BankType bankType) {
+		this.bankType = bankType;
+	}
+
 	public String getAccountNumber() {
 		return accountNumber;
 	}
@@ -37,6 +48,14 @@ public class CashoutDetails {
 
 	public void setAccountBranch(String accountBranch) {
 		this.accountBranch = accountBranch;
+	}
+
+	public String getAccountNickname() {
+		return accountNickname;
+	}
+
+	public void setAccountNickname(String accountNickname) {
+		this.accountNickname = accountNickname;
 	}
 
 	public String getAccountName() {

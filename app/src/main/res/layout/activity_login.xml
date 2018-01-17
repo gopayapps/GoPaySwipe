@@ -44,16 +44,16 @@
 				android:layout_height="wrap_content"
 				android:orientation="vertical">
 
-				<EditText
-					android:id="@+id/txtName"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
-					android:drawableTop="@drawable/login"
-					android:inputType="none"
-					android:textColor="@color/colorAccent"
-					android:textIsSelectable="false"
-					android:visibility="visible" />
+				<!--<EditText-->
+					<!--android:id="@+id/txtName"-->
+					<!--android:layout_width="wrap_content"-->
+					<!--android:layout_height="wrap_content"-->
+					<!--android:layout_gravity="center"-->
+					<!--android:drawableTop="@drawable/login"-->
+					<!--android:inputType="none"-->
+					<!--android:textColor="@color/colorAccent"-->
+					<!--android:textIsSelectable="false"-->
+					<!--android:visibility="visible" />-->
 
 				<EditText
 					android:id="@+id/edtUsername"
@@ -67,7 +67,8 @@
 					android:inputType="text"
 					android:maxLines="1"
 					android:singleLine="true"
-					android:visibility="gone" />
+					android:textColor="@color/colorAccent"
+					android:visibility="visible" />
 
 				<EditText
 					android:id="@+id/edtPin"

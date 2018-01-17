@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Register progress -->
+    <ProgressBar
+        android:id="@+id/prgRegister"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/reregister_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="false">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:src="@drawable/gopay_logo_transparent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorAccent"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="@string/info_reregister"
+                android:textAlignment="center"
+                android:textColor="#254117"
+                android:textSize="15dip"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/frmReRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtReRegUsername"
+                    android:layout_width="@dimen/activity_ui_items"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:singleLine="true"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txtReRegName"
+                    android:layout_width="@dimen/activity_ui_items"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:singleLine="true"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txtReRegMsisdn"
+                    android:layout_width="@dimen/activity_ui_items"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:singleLine="true"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txtReRegEmail"
+                    android:layout_width="@dimen/activity_ui_items"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:singleLine="true"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/txtReRegPassword"
+                    android:layout_width="@dimen/activity_ui_items"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="@string/prompt_password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="@dimen/activity_ui_items"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/txtReRegPin"
+                        android:layout_width="@dimen/activity_half_ui_items"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:hint="@string/prompt_pin"
+                        android:inputType="numberPassword"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/txtReRegRPin"
+                        android:layout_width="@dimen/activity_half_ui_items"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:hint="@string/prompt_rpin"
+                        android:inputType="numberPassword"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnReRegRegister"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="@dimen/activity_ui_items"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:text="@string/action_register"
+                    android:textAllCaps="false"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,4 +1,4 @@
-package net.beyondtelecom.gopayswipe.common;
+package net.beyondtelecom.gopayswipe.dto;
 
 import java.math.BigDecimal;
 

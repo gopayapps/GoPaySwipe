@@ -33,7 +33,8 @@
 			<LinearLayout
 				android:id="@+id/cashoutInfo"
 				android:layout_width="fill_parent"
-				android:layout_height="fill_parent">
+				android:layout_height="fill_parent"
+				android:gravity="center">
 
 				<TextView
 					android:layout_width="wrap_content"
@@ -41,7 +42,7 @@
 					android:backgroundTint="@color/colorAccent"
 					android:gravity="center_horizontal"
 					android:padding="10dp"
-					android:text="@string/cashout_info"
+					android:text="@string/info_cashout"
 					android:textAlignment="center"
 					android:textColor="#254117"
 					android:textSize="15dip"
@@ -117,10 +118,20 @@
 
 				<!--  Mobile Number TextField -->
 				<EditText
-					android:id="@+id/edtCashoutMobileNumber"
+					android:id="@+id/edtMobileCashoutNumber"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:hint="Mobile Number"
+					android:inputType="number"
+					android:maxLength="10"
+					android:textSize="16sp" />
+
+				<!--  Account Name TextField -->
+				<EditText
+					android:id="@+id/edtMobileCashoutName"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:hint="Mobile Account Name (Optional)"
 					android:inputType="number"
 					android:maxLength="10"
 					android:textSize="16sp" />
@@ -169,7 +180,7 @@
 
 				<!--  Bank Account Number Label -->
 				<EditText
-					android:id="@+id/registerBankAccountName"
+					android:id="@+id/edtBankAccountName"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:hint="Account Name"
@@ -177,20 +188,20 @@
 
 				<!--  Bank Account Number TextField -->
 				<EditText
-					android:id="@+id/registerBankAccountNumber"
+					android:id="@+id/edtBankAccountNumber"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:hint="Bank Account Number"
-					android:numeric="integer"
+					android:inputType="number"
 					android:textSize="16sp" />
 
 				<!--  Msisdn TextField -->
 				<EditText
-					android:id="@+id/registerMsisdn"
+					android:id="@+id/edtBankAccountPhone"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:hint="Phone Number"
-					android:numeric="integer"
+					android:inputType="number"
 					android:textSize="16sp" />
 
 				<!--  Add Button -->

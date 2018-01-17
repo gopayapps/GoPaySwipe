@@ -15,6 +15,7 @@ import android.util.Log;
 
 import net.beyondtelecom.gopayswipe.common.ActivityCommon;
 import net.beyondtelecom.gopayswipe.common.BTResponseCode;
+import net.beyondtelecom.gopayswipe.common.BTResponseObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,17 +32,19 @@ import static java.lang.String.valueOf;
 import static net.beyondtelecom.gopayswipe.common.BTResponseCode.CONNECTION_FAILED;
 import static net.beyondtelecom.gopayswipe.common.BTResponseCode.GENERAL_ERROR;
 import static net.beyondtelecom.gopayswipe.common.BTResponseCode.SUCCESS;
+import static net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask.TASK_TYPE.GET;
 import static net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask.TASK_TYPE.POST;
 
-public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseCode> {
+public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseObject> {
 
     private static final String TAG = ActivityCommon.getTag(HTTPBackgroundTask.class);
+    private static final String SERVER_URL = "http://GHOST:8080/bt_api-1.0.0/bt/server/json/";
+    public static final String SESSION_URL = SERVER_URL + "goPay/session";
+    public static final String REGISTER_URL = SERVER_URL + "goPay/user";
+    public static final String USER_URL = SERVER_URL + "user";
     public enum TASK_TYPE { POST, PUT, GET }
-    public static final String SERVER_URL = "http://192.168.1.15:8080/bt_api-1.0.0/bt/server/json/goPay/";
-    public static final Integer CONNECT_TIMEOUT = 10000;
-    public static final Integer READ_TIMEOUT = 20000;
-    public static final String SESSION_URL = SERVER_URL + "session";
-    public static final String REGISTER_URL = SERVER_URL + "user";
+    private static final Integer CONNECT_TIMEOUT = 10000;
+    private static final Integer READ_TIMEOUT = 20000;
     private final ProgressDialog progressDialog;
     private final Hashtable params;
     private final TASK_TYPE taskType;
@@ -58,10 +61,10 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseCode> {
 
     public BTResponseCode getBtResponseCode() { return btResponseCode; }
 
-    public void setBtResponseCode(BTResponseCode btResponseCode) { this.btResponseCode = btResponseCode; }
+    private void setBtResponseCode(BTResponseCode btResponseCode) { this.btResponseCode = btResponseCode; }
 
     @Override
-    protected BTResponseCode doInBackground(Void... params) {
+    protected BTResponseObject doInBackground(Void... params) {
         Enumeration keys = this.params.keys();
         StringBuilder paramsBuilder = new StringBuilder();
         while (keys.hasMoreElements()) {
@@ -79,7 +82,7 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseCode> {
             Log.i(TAG, "Response String: " + responseString);
 
             if (responseString == null) {
-                return btResponseCode;
+                return new BTResponseObject(btResponseCode);
             }
 
             JSONObject responseJSON = new JSONObject(responseString);
@@ -99,52 +102,67 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseCode> {
 
             if (responseCode == SUCCESS.getCode()) {
                 Log.i(TAG, "Operation Successful: " + responseMessage);
-                return btResponseCode;
+                return new BTResponseObject<>(btResponseCode, responseString);
             } else if (responseCode < 0) {
                 Log.w(TAG, "Operation Failed: " + responseMessage);
-                return btResponseCode;
+                return new BTResponseObject<>(btResponseCode, responseString);
             } else {
                 Log.w(TAG, "Operation Failed: " + responseMessage);
-                return btResponseCode;
+                return new BTResponseObject<>(btResponseCode, responseString);
             }
         }
         catch (JSONException e) {
             e.printStackTrace();
             Log.e(TAG, "Exception occurred processing response: " + e.getMessage());
             setBtResponseCode(GENERAL_ERROR.setMessage("Failed! Invalid server response received"));
-            return btResponseCode;
+            return new BTResponseObject(btResponseCode);
         }
     }
 
     @Override
     protected void onPreExecute() {
-        progressDialog.setMessage("Processing...");
-        progressDialog.show();
+//        progressDialog.setMessage("Processing...");
+//        progressDialog.show();
     }
 
     @Override
-    protected void onPostExecute(final BTResponseCode success) {
-        progressDialog.hide();
+    protected void onPostExecute(final BTResponseObject success) {
+//        progressDialog.hide();
     }
 
     @Override
     protected void onCancelled() {
-        progressDialog.hide();
+//        progressDialog.hide();
     }
 
     private HttpURLConnection getConnection()
     {
         try {
-            Log.i(TAG, "Opening connection to " + requestURL);
-            URL url = new URL(requestURL);
+
+            String connectionURL = requestURL;
+
+            if (taskType.equals(GET) && params.size() > 0) {
+                StringBuilder getParams = new StringBuilder();
+                Log.i(TAG, "Appending query parameters for GET");
+                Enumeration keys = params.keys();
+                while (keys.hasMoreElements()) {
+                    String key = (String)keys.nextElement();
+                    getParams.append(key).append("=").append(params.get(key));
+                    if (keys.hasMoreElements()) { getParams.append("&"); }
+                }
+                connectionURL += "?" + getParams.toString();
+            }
+
+            Log.i(TAG, "Opening connection to " + connectionURL);
+            URL url = new URL(connectionURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(CONNECT_TIMEOUT);
             connection.setReadTimeout(READ_TIMEOUT);
-            connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setInstanceFollowRedirects(false);
             connection.setRequestMethod(taskType.name());
-            if (taskType == POST) {
+            if (taskType.equals(POST)) {
+                connection.setDoOutput(true);
                 Log.i(TAG, "Setting content-type for POST");
                 connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             }
@@ -160,17 +178,16 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseCode> {
         }
     }
 
-    private String sendServerRequest()
-    {
+    private String sendServerRequest() {
         try {
             HttpURLConnection connection = getConnection();
             if (connection == null) { return null; }
 
-            StringBuilder postParams = new StringBuilder();
-            DataOutputStream writer = null;
 
-            if (taskType == POST) {
+            if (taskType.equals(POST)) {
+                DataOutputStream writer = null;
                 Log.i(TAG, "Appending parameters for POST");
+                StringBuilder postParams = new StringBuilder();
                 Enumeration keys = params.keys();
                 while (keys.hasMoreElements()) {
                     String key = (String)keys.nextElement();
@@ -182,6 +199,7 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseCode> {
                 writer = new DataOutputStream(connection.getOutputStream());
                 writer.writeBytes(postParams.toString());
                 writer.flush();
+                writer.close();
             }
 
             Log.i(TAG, "Reading input stream");
@@ -191,7 +209,6 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseCode> {
             StringBuilder communicationResult = new StringBuilder();
             while ((line = reader.readLine()) != null) { communicationResult.append(line); }
 
-            if (writer != null) { writer.close(); }
             reader.close();
             Log.i(TAG, "Got response: " + communicationResult.toString());
             return communicationResult.toString();
