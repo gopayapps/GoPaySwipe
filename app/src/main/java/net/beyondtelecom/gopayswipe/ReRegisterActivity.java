@@ -156,7 +156,7 @@ public class ReRegisterActivity extends AppCompatActivity {
 //						GPPersistence goPayDB = LoginActivity.getLoginActivity().getGoPayDB();
 //						goPayDB.setUserDetails(newUserDetails);
 //						finish();
-//						Intent bankIntent = new Intent(getLoginActivity(), BankActivity.class);
+//						Intent bankIntent = new Intent(getLoginActivity(), AddCashoutActivity.class);
 //						startActivity(bankIntent);
 //						runOnUiThread(new Runnable() {
 //							public void run() {

@@ -35,7 +35,7 @@ import static net.beyondtelecom.gopayswipe.common.Validator.isValidMsisdn;
  * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
  * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
  */
-public class BankActivity extends AppCompatActivity {
+public class AddCashoutActivity extends AppCompatActivity {
 
 	private static final String TAG = ActivityCommon.getTag(LoginActivity.class);
 	private Activity bankActivity;
@@ -54,7 +54,7 @@ public class BankActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activty_cashout);
+		setContentView(R.layout.activty_add_cashout);
 		bankActivity = this;
 
 		spnChooseBank = (Spinner) findViewById(R.id.spnChooseBank);

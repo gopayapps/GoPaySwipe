@@ -20,9 +20,6 @@ import net.beyondtelecom.gopayswipe.dto.UserDetails;
 import net.beyondtelecom.gopayswipe.persistence.GPPersistence;
 import net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.Hashtable;
 import java.util.concurrent.ExecutionException;
 
@@ -30,13 +27,11 @@ import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getDeviceIMEI;
 import static net.beyondtelecom.gopayswipe.common.BTResponseCode.SUCCESS;
-import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidEmail;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidMsisdn;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidName;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidPin;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidUsername;
-import static net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask.TASK_TYPE.GET;
 import static net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask.TASK_TYPE.POST;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -237,8 +232,8 @@ public class RegisterActivity extends AppCompatActivity {
 						GPPersistence goPayDB = LoginActivity.getGoPayDB();
 						goPayDB.setUserDetails(newUserDetails);
 						finish();
-						Intent bankIntent = new Intent(registerActivity, BankActivity.class);
-						startActivity(bankIntent);
+						Intent mainIntent = new Intent(registerActivity, MainActivity.class);
+						startActivity(mainIntent);
 						runOnUiThread(new Runnable() {
 							public void run() {
 								makeText(registerActivity, "Registration successful.", LENGTH_LONG).show();
@@ -268,60 +263,60 @@ public class RegisterActivity extends AppCompatActivity {
 		}
 	}
 
-	private UserDetails getPreviousAccountDetails() {
-
-		previousRegDetails = null;
-
-		final Hashtable searchParams = new Hashtable<String, String>();
-
-		searchParams.put("msisdn", txtRegMsisdn.getText().toString());
-
-		if (!isNullOrEmpty(txtRegEmail.getText().toString())) {
-			searchParams.put("email", txtRegEmail.getText().toString());
-		}
-
-		final HTTPBackgroundTask searchTask = new HTTPBackgroundTask(
-			this, GET, HTTPBackgroundTask.USER_URL, searchParams
-		);
-
-		runOnUiThread(new Runnable() {
-			public void run() {
-
-				BTResponseObject searchResponse;
-				try {
-					searchResponse = searchTask.execute().get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					searchResponse = new BTResponseObject(
-						BTResponseCode.GENERAL_ERROR.setMessage("Registration interrupted")
-					);
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-					searchResponse = new BTResponseObject(
-						BTResponseCode.GENERAL_ERROR.setMessage("Registration failed: " + e.getMessage())
-					);
-				}
-
-				final String responseMsg = searchResponse.getMessage();
-
-				Log.i(TAG, "Registration Response: " + responseMsg);
-
-				if (searchResponse.equals(SUCCESS)) {
-
-					try {
-						JSONObject responseJSON = new JSONObject((String) searchResponse.getResponseObject());
-
-						Log.i(TAG, (String) searchResponse.getResponseObject());
-
-						previousRegDetails = new UserDetails();
-
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-
-				}
-			}
-		});
-		return previousRegDetails;
-	}
+//	private UserDetails getPreviousAccountDetails() {
+//
+//		previousRegDetails = null;
+//
+//		final Hashtable searchParams = new Hashtable<String, String>();
+//
+//		searchParams.put("msisdn", txtRegMsisdn.getText().toString());
+//
+//		if (!isNullOrEmpty(txtRegEmail.getText().toString())) {
+//			searchParams.put("email", txtRegEmail.getText().toString());
+//		}
+//
+//		final HTTPBackgroundTask searchTask = new HTTPBackgroundTask(
+//			this, GET, HTTPBackgroundTask.USER_URL, searchParams
+//		);
+//
+//		runOnUiThread(new Runnable() {
+//			public void run() {
+//
+//				BTResponseObject searchResponse;
+//				try {
+//					searchResponse = searchTask.execute().get();
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//					searchResponse = new BTResponseObject(
+//						BTResponseCode.GENERAL_ERROR.setMessage("Registration interrupted")
+//					);
+//				} catch (ExecutionException e) {
+//					e.printStackTrace();
+//					searchResponse = new BTResponseObject(
+//						BTResponseCode.GENERAL_ERROR.setMessage("Registration failed: " + e.getMessage())
+//					);
+//				}
+//
+//				final String responseMsg = searchResponse.getMessage();
+//
+//				Log.i(TAG, "Registration Response: " + responseMsg);
+//
+//				if (searchResponse.equals(SUCCESS)) {
+//
+//					try {
+//						JSONObject responseJSON = new JSONObject((String) searchResponse.getResponseObject());
+//
+//						Log.i(TAG, (String) searchResponse.getResponseObject());
+//
+//						previousRegDetails = new UserDetails();
+//
+//					} catch (JSONException e) {
+//						e.printStackTrace();
+//					}
+//
+//				}
+//			}
+//		});
+//		return previousRegDetails;
+//	}
 }

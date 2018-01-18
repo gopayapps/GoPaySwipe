@@ -38,7 +38,7 @@ public class TabCashoutOptions extends Fragment {
         btnAddCashoutOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent bankIntent = new Intent(getMainActivity(), BankActivity.class);
+                Intent bankIntent = new Intent(getMainActivity(), AddCashoutActivity.class);
                 startActivity(bankIntent);
             }
         });

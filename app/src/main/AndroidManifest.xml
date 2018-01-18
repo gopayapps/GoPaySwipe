@@ -43,12 +43,8 @@
             android:label="@string/title_pin_details" >
         </activity>
         <activity
-            android:name=".BankActivity"
+            android:name=".AddCashoutActivity"
             android:label="@string/title_cashout_details" >
-        </activity>
-        <activity
-            android:name=".ChargeActivity"
-            android:label="@string/title_swipe" >
         </activity>
 
     </application>
