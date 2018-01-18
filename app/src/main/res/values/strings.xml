@@ -1,5 +1,8 @@
 <resources>
 	<string name="app_name">GoPay Swipe</string>
+
+	<string name="action_settings">Settings</string>
+
 	<string-array name="cashout_type">
 		<item>No Cashout Option</item>
 		<item>Local Bank Account</item>
@@ -47,6 +50,7 @@
 	<string name="action_complete_transaction">Complete Transaction</string>
 	<string name="action_cancel">Cancel</string>
 	<string name="action_start_swipe">Process Payment</string>
+	<string name="action_add_cashout_option">Add Cashout Option</string>
 
 	<string name="error_invalid_username">This username is not valid</string>
 	<string name="error_invalid_name">This name is not valid</string>
@@ -73,6 +77,7 @@
 
 	<string name="label_currency_for_transaction">Transaction Currency</string>
 	<string name="label_transaction_details">Transaction Details</string>
+	<string name="label_cashout_options">Cashout Options</string>
 	<string name="label_transaction_summary">Transaction Summary</string>
 	<string name="label_no_reference">[No Reference Specified]</string>
 
@@ -80,6 +85,12 @@
 	<string name="prompt_transaction_reference">Transaction Reference (Optional)</string>
     <string name="prompt_enter_amount">Enter Amount to Pay</string>
 	<string name="label_cashout_details">Cashout Details</string>
-	<string name="label_account_type">Select Account Type</string>
+	<string name="label_account_type">Account Type</string>
+    <string name="prompt_add_cashout_option">click + button to add cashout options</string>
+
+	<string name="hint_account_nickname">Account Nickname</string>
+	<string name="prompt_account_name">Account Name</string>
+	<string name="prompt_account_number">Bank Account Number</string>
+	<string name="prompt_account_branch">Bank Account Branch</string>
 
 </resources>

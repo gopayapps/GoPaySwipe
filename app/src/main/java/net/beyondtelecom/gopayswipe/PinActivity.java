@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import static java.lang.String.format;
-import static net.beyondtelecom.gopayswipe.ChargeActivity.getTransactionDetails;
+import static net.beyondtelecom.gopayswipe.TabCharge.getTransactionDetails;
 import static net.beyondtelecom.gopayswipe.common.CommonUtilities.formatDoubleToMoney;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidCardPin;

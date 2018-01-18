@@ -1,14 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center_horizontal"
-              android:orientation="vertical"
-              android:paddingBottom="@dimen/activity_vertical_margin"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin"
-              tools:activity=".BankActivity">
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	tools:context=".BankActivity">
+
+	<include
+		android:id="@+id/tool_bar"
+		layout="@layout/tool_bar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" />
 
 	<ScrollView
 		android:id="@+id/bank_details_form"
@@ -66,95 +67,67 @@
 					android:textSize="@dimen/title_heading_size"
 					android:textStyle="bold" />
 
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="5dp"
-					android:text="@string/label_account_type" />
-
-				<Spinner
-					android:id="@+id/spnChooseCashoutType"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content" />
-
-				<!--  Error message -->
-				<TextView
-					android:id="@+id/addDetailsError"
+				<LinearLayout
 					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:padding="3dp"
-					android:textColor="#e30000"
-					android:textStyle="bold" />
+					android:layout_height="fill_parent"
+					android:gravity="left|center_vertical"
+					android:orientation="horizontal">
 
-				<!--  Add Button -->
-				<Button
-					android:id="@+id/btnSkipCashout"
-					style="@style/Widget.AppCompat.Button.Colored"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:backgroundTint="@color/colorPrimaryDark"
-					android:text="Skip Adding Cashout Option"
-					android:textStyle="bold" />
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginEnd="5dp"
+						android:layout_marginRight="5dp"
+						android:text="@string/label_account_type"
+						android:textSize="16dp" />
 
-			</LinearLayout>
+					<Spinner
+						android:id="@+id/spnChooseBank"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="5dp" />
 
-			<!--  Mobile Account Details -->
-			<LinearLayout
-				android:id="@+id/detailsMobileBank"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
-				android:orientation="vertical"
-				android:visibility="invisible">
+				</LinearLayout>
 
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
-					android:gravity="center_horizontal"
-					android:paddingBottom="5dp"
-					android:text="Mobile Account Details"
-					android:textSize="16dip"
-					android:textStyle="bold" />
-
-				<!--  Mobile Number TextField -->
+				<!--  Account Nickname TextField -->
 				<EditText
-					android:id="@+id/edtMobileCashoutNumber"
+					android:id="@+id/edtAccountNickname"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:hint="Mobile Number"
-					android:inputType="number"
-					android:maxLength="10"
+					android:hint="@string/hint_account_nickname"
+					android:inputType="text"
+					android:maxLength="20"
 					android:textSize="16sp" />
 
-				<!--  Account Name TextField -->
+				<!--  Account Phone TextField -->
 				<EditText
-					android:id="@+id/edtMobileCashoutName"
+					android:id="@+id/edtAccountPhone"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:hint="Mobile Account Name (Optional)"
-					android:inputType="number"
-					android:maxLength="10"
+					android:hint="@string/prompt_phone"
+					android:inputType="phone"
+					android:maxLength="12"
 					android:textSize="16sp" />
 
-				<!--  Add Button -->
-				<Button
-					android:id="@+id/btnAddMobileCashout"
+				<!--  Account Email TextField -->
+				<EditText
+					android:id="@+id/edtAccountEmail"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					style="@style/Widget.AppCompat.Button.Colored"
-					android:backgroundTint="@color/colorPrimaryDark"
-					android:text="Add Mobile Bank Account"
-					android:textAllCaps="false"
-					android:textStyle="bold" />
+					android:hint="@string/prompt_email"
+					android:inputType="textEmailAddress"
+					android:maxLength="50"
+					android:textSize="16sp" />
+
 			</LinearLayout>
 
 			<!--  Bank Account Details -->
 			<LinearLayout
-				android:id="@+id/detailsBankAccount"
+				android:id="@+id/layoutBankAccount"
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				android:orientation="vertical"
-				android:visibility="invisible">
+				android:visibility="gone">
 
 				<TextView
 					android:layout_width="wrap_content"
@@ -166,24 +139,13 @@
 					android:textSize="16dip"
 					android:textStyle="bold" />
 
-				<TextView
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="5dp"
-					android:text="Select Bank" />
-
-				<Spinner
-					android:id="@+id/spnChooseBank"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="5dp" />
-
 				<!--  Bank Account Number Label -->
 				<EditText
 					android:id="@+id/edtBankAccountName"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:hint="Account Name"
+					android:hint="@string/prompt_account_name"
+					android:maxLength="50"
 					android:textSize="16sp" />
 
 				<!--  Bank Account Number TextField -->
@@ -191,30 +153,35 @@
 					android:id="@+id/edtBankAccountNumber"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:hint="Bank Account Number"
+					android:hint="@string/prompt_account_number"
 					android:inputType="number"
+					android:maxLength="20"
 					android:textSize="16sp" />
 
-				<!--  Msisdn TextField -->
+				<!--  Bank Account Number TextField -->
 				<EditText
-					android:id="@+id/edtBankAccountPhone"
+					android:id="@+id/edtBankBranch"
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:hint="Phone Number"
+					android:hint="@string/prompt_account_branch"
 					android:inputType="number"
+					android:maxLength="20"
 					android:textSize="16sp" />
 
-				<!--  Add Button -->
-				<Button
-					android:id="@+id/btnAddBankCashout"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					style="@style/Widget.AppCompat.Button.Colored"
-					android:backgroundTint="@color/colorPrimaryDark"
-					android:text="Add Bank Account"
-					android:textAllCaps="false"
-					android:textStyle="bold" />
 			</LinearLayout>
+
+			<!--  Add Button -->
+			<Button
+				android:id="@+id/btnAddCashoutAccount"
+				style="@style/Widget.AppCompat.Button.Colored"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:backgroundTint="@color/colorPrimaryDark"
+				android:text="@string/action_add_cashout_option"
+				android:textAllCaps="false"
+				android:textStyle="bold" />
+
+
 		</LinearLayout>
 	</ScrollView>
 

@@ -187,7 +187,7 @@ public class LoginActivity extends AppCompatActivity {
 					Log.i(TAG, "Login Response: " + loginTask.getBtResponseCode().getMessage());
 
 					if (loginResponse.getResponseCode().equals(SUCCESS)) {
-						Intent swipeIntent = new Intent(loginActivity, ChargeActivity.class);
+						Intent swipeIntent = new Intent(loginActivity, MainActivity.class);
 						startActivity(swipeIntent);
 					}
 				}
