@@ -1,4 +1,4 @@
-package net.beyondtelecom.gopayswipe.test;
+package net.beyondtelecom.gopayswipe.navigation;
 
 
 import android.support.v4.app.Fragment;

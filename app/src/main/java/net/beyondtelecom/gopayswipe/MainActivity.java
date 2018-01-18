@@ -7,8 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import net.beyondtelecom.gopayswipe.test.SlidingTabLayout;
-import net.beyondtelecom.gopayswipe.test.ViewPagerAdapter;
+import net.beyondtelecom.gopayswipe.navigation.SlidingTabLayout;
+import net.beyondtelecom.gopayswipe.navigation.ViewPagerAdapter;
 
 /**
  * Created by Edwin on 15/02/2015.

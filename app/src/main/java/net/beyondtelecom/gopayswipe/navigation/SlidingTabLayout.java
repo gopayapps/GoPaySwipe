@@ -1,4 +1,4 @@
-package net.beyondtelecom.gopayswipe.test;
+package net.beyondtelecom.gopayswipe.navigation;
 
 import android.content.Context;
 import android.graphics.Typeface;
