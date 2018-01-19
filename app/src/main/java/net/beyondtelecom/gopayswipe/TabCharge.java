@@ -24,12 +24,16 @@ import com.square.MagReadListener;
 
 import net.beyondtelecom.gopayswipe.common.ReferenceGenerator;
 import net.beyondtelecom.gopayswipe.dto.CardType;
+import net.beyondtelecom.gopayswipe.dto.CurrencyType;
 import net.beyondtelecom.gopayswipe.dto.TransactionDetails;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
+import static net.beyondtelecom.gopayswipe.LoginActivity.getGoPayDB;
+import static net.beyondtelecom.gopayswipe.TabCashoutOptions.getCashoutDetails;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNumeric;
 import static net.beyondtelecom.gopayswipe.dto.CardType.UNKNOWN;
@@ -96,20 +100,27 @@ public class TabCharge extends Fragment {
     }
 
     private void populateCurrencies() {
-        ArrayAdapter<CharSequence> currencyTypeAdapter = ArrayAdapter.createFromResource(mainActivity,
-                R.array.currency_type, android.R.layout.simple_spinner_item);
-        currencyTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        ArrayList<CurrencyType> currencyTypes = getGoPayDB().getCurrencyTypes();
+        ArrayAdapter<CharSequence> currencyTypeAdapter = new ArrayAdapter<>(
+                MainActivity.getMainActivity(), android.R.layout.simple_spinner_item);
+
+        for (CurrencyType currencyType : currencyTypes) {
+            currencyTypeAdapter.add(currencyType.getCurrencyTypeName());
+        }
+
         chooseCurrencyType.setAdapter(currencyTypeAdapter);
         chooseCurrencyType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                getTransactionDetails().setTransactionCurrency((String)chooseCurrencyType.getSelectedItem());
+                getCashoutDetails().setCashoutCurrency((String)chooseCurrencyType.getSelectedItem());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
+
     private class MicListener implements View.OnClickListener {
 
         /**

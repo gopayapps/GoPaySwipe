@@ -39,6 +39,7 @@
 	<string name="prompt_lname">Lastname</string>
 	<string name="prompt_email">Email</string>
 	<string name="prompt_phone">Phone Number</string>
+	<string name="prompt_gopay_pin">GoPay Pin</string>
 	<string name="prompt_pin">Pin</string>
 	<string name="prompt_new_pin">Pin</string>
 	<string name="prompt_rpin">Repeat Pin</string>
@@ -50,6 +51,7 @@
 	<string name="action_complete_transaction">Complete Transaction</string>
 	<string name="action_cancel">Cancel</string>
 	<string name="action_start_swipe">Process Payment</string>
+	<string name="action_cashout">Cashout</string>
 	<string name="action_add_cashout_option">Add Cashout Option</string>
 
 	<string name="error_invalid_username">This username is not valid</string>
@@ -68,6 +70,7 @@
 	<string name="title_register_details">Registration Details</string>
 	<string name="title_reregister_details">Register Existing User</string>
 	<string name="title_cashout_details">Cashout Details</string>
+	<string name="title_cashout">Cashout</string>
 
 
 	<string name="info_cashout">If you would like to withdraw funds received through this app, add a cashout option below.</string>
@@ -83,6 +86,7 @@
 
 	<string name="prompt_transaction_amount">Enter Amount</string>
 	<string name="prompt_transaction_reference">Transaction Reference (Optional)</string>
+	<string name="prompt_cashout_reference">Cashout Reference (Optional)</string>
     <string name="prompt_enter_amount">Enter Amount to Pay</string>
 	<string name="label_cashout_details">Cashout Details</string>
 	<string name="label_account_type">Account Type</string>

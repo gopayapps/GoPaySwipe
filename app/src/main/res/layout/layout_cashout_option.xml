@@ -58,6 +58,7 @@
 
 
             <android.support.design.widget.FloatingActionButton
+                android:id="@+id/btnStartCashout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -79,14 +80,21 @@
                     android:id="@+id/txvNickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/txvAccountNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
             </LinearLayout>
+
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_weight="1"
+            android:background="#ffffff" />
     </LinearLayout>
 </LinearLayout>

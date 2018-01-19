@@ -46,6 +46,10 @@
             android:name=".AddCashoutActivity"
             android:label="@string/title_cashout_details" >
         </activity>
+        <activity
+            android:name=".CashoutActivity"
+            android:label="@string/title_cashout" >
+        </activity>
 
     </application>
 

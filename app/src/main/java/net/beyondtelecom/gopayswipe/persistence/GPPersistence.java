@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getTag;
+import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 
 /**
  * User: tkaviya
@@ -25,7 +26,7 @@ import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getTag;
 public class GPPersistence extends SQLiteOpenHelper {
 
 	// If you change the database schema, you must increment the database version.
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 1;
 
 	private static final String TAG = getTag(GPPersistence.class);
 
@@ -75,7 +76,7 @@ public class GPPersistence extends SQLiteOpenHelper {
 				"wallet_phone VARCHAR(50)," +
 				"wallet_email VARCHAR(50))");
 
-		db.execSQL("INSERT INTO " + CASHOUT_OPTION + " (cashout_option_name,cashout_option_type) VALUES" +
+		db.execSQL("INSERT INTO " + CASHOUT_OPTION + " (cashout_option_name,cashout_option_type) VALUES " +
 				" ('EcoCash','" + AccountType.MOBILE_BANK_ACCOUNT.name() + "')," +
 				" ('Telecash','" + AccountType.MOBILE_BANK_ACCOUNT.name() + "')," +
 				" ('NetCash','" + AccountType.MOBILE_BANK_ACCOUNT.name() + "')," +
@@ -96,6 +97,12 @@ public class GPPersistence extends SQLiteOpenHelper {
 				" ('Standard Chartered','" + AccountType.BANK_ACCOUNT.name() + "')," +
 				" ('Steward Bank','" + AccountType.BANK_ACCOUNT.name() + "')," +
 				" ('ZB Bank','" + AccountType.BANK_ACCOUNT.name() + "')");
+
+		db.execSQL("INSERT INTO " + CURRENCY_TYPE + " (currency_type_id,currency_type_name) VALUES " +
+				" (1, 'USD')," +
+				" (2, 'ZAR')," +
+				" (3, 'GBP')," +
+				" (4, 'BWP')");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -187,12 +194,12 @@ public class GPPersistence extends SQLiteOpenHelper {
 		if (userData.isAfterLast()) { return null; }
 		userData.moveToFirst();
 		UserDetails userDetails = new UserDetails();
-		userDetails.setUsername(userData.getString(0));
-		userDetails.setFirstName(userData.getString(1));
-		userDetails.setLastName(userData.getString(2));
-		userDetails.setMsisdn(userData.getString(3));
-		userDetails.setEmail(userData.getString(4));
-		userDetails.setPin(userData.getString(5));
+		userDetails.setUsername(userData.isNull(0) ? null : userData.getString(0));
+		userDetails.setFirstName(userData.isNull(1) ? null : userData.getString(1));
+		userDetails.setLastName(userData.isNull(2) ? null : userData.getString(2));
+		userDetails.setMsisdn(userData.isNull(3) ? null : userData.getString(3));
+		userDetails.setEmail(userData.isNull(4) ? null : userData.getString(4));
+		userDetails.setPin(userData.isNull(5) ? null : userData.getString(5));
 		return userDetails;
 	}
 
@@ -202,12 +209,12 @@ public class GPPersistence extends SQLiteOpenHelper {
 				" wallet_account_number, wallet_branch, wallet_phone," +
 				" wallet_email) VALUES (" +
 				"'" + walletAccount.getCashoutOption().getCashoutOptionId() + "'," +
-				"'" + walletAccount.getWalletNickname() + "'," +
-				"'" + walletAccount.getWalletName() + "'," +
-				"'" + walletAccount.getWalletAccountNumber() + "'," +
-				"'" + walletAccount.getWalletAccountBranch() + "'," +
-				"'" + walletAccount.getWalletPhone() + "'," +
-				"'" + walletAccount.getWalletEmail() + "');";
+				(isNullOrEmpty(walletAccount.getWalletNickname()) ? null : "'" + walletAccount.getWalletNickname() + "'") + "," +
+				(isNullOrEmpty(walletAccount.getWalletName()) ? null : "'" + walletAccount.getWalletName() + "'") + "," +
+				(isNullOrEmpty(walletAccount.getWalletAccountNumber()) ? null : "'" + walletAccount.getWalletAccountNumber() + "'") + "," +
+				(isNullOrEmpty(walletAccount.getWalletAccountBranch()) ? null : "'" + walletAccount.getWalletAccountBranch() + "'") + "," +
+				(isNullOrEmpty(walletAccount.getWalletPhone()) ? null : "'" + walletAccount.getWalletPhone() + "'") + "," +
+				(isNullOrEmpty(walletAccount.getWalletEmail()) ? null : "'" + walletAccount.getWalletEmail() + "'") + ")";
 			getGPWritableDatabase().execSQL(sql);
 	}
 
@@ -221,14 +228,14 @@ public class GPPersistence extends SQLiteOpenHelper {
 		accountData.moveToNext();
 		while (!accountData.isAfterLast()) {
 			walletAccounts.add(new WalletAccount(
-					accountData.getInt(0), //wallet_account_id
-					cashoutOptions.get(accountData.getInt(1)), //cashout_option_id
-					accountData.getString(2), //wallet_nick_name
-					accountData.getString(3), //wallet_name
-					accountData.getString(4), //wallet_account_number
-					accountData.getString(5), //wallet_branch
-					accountData.getString(6), //wallet_phone
-					accountData.getString(7)  //wallet_email
+					accountData.isNull(0) ? null : accountData.getInt(0), //wallet_account_id
+					accountData.isNull(1) ? null : cashoutOptions.get(accountData.getInt(1)), //cashout_option_id
+					accountData.isNull(2) ? null : accountData.getString(2), //wallet_nick_name
+					accountData.isNull(3) ? null : accountData.getString(3), //wallet_name
+					accountData.isNull(4) ? null : accountData.getString(4), //wallet_account_number
+					accountData.isNull(5) ? null : accountData.getString(5), //wallet_branch
+					accountData.isNull(6) ? null : accountData.getString(6), //wallet_phone
+					accountData.isNull(7) ? null : accountData.getString(7)  //wallet_email
 				)
 			);
 			accountData.moveToNext();
@@ -247,12 +254,12 @@ public class GPPersistence extends SQLiteOpenHelper {
 	public void setUserDetails(UserDetails newUserDetails) {
 		getGPWritableDatabase().execSQL("DELETE FROM " + USER_DETAILS);
 		String sql = "INSERT INTO " + USER_DETAILS + "(username,first_name,last_name,msisdn,email,pin) VALUES (" +
-			"'" + newUserDetails.getUsername() + "'," +
-			"'" + newUserDetails.getFirstName() + "'," +
-			"'" + newUserDetails.getLastName() + "'," +
-			"'" + newUserDetails.getMsisdn() + "'," +
-			"'" + newUserDetails.getEmail() + "'," +
-			"'" + newUserDetails.getPin() + "');";
+			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getUsername() + "'") + "," +
+			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getFirstName() + "'") + "," +
+			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getLastName() + "'") + "," +
+			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getMsisdn() + "'") + "," +
+			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getEmail() + "'") + "," +
+			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getPin() + "'") + ")";
 		getGPWritableDatabase().execSQL(sql);
 	}
 }

@@ -24,8 +24,10 @@ import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 import static net.beyondtelecom.gopayswipe.LoginActivity.getGoPayDB;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
+import static net.beyondtelecom.gopayswipe.common.Validator.isNumeric;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidEmail;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidMsisdn;
+import static net.beyondtelecom.gopayswipe.common.Validator.isValidName;
 
 /**
  * A login screen that offers login via email/password and via Google+ sign in.
@@ -135,7 +137,7 @@ public class AddCashoutActivity extends AppCompatActivity {
 				}
 			}
 
-			walletAccount.setWalletNickname(edtAccountNickname.getText().toString());
+			walletAccount.setWalletNickname(isNullOrEmpty(edtAccountNickname.getText().toString()) ? null : edtAccountNickname.getText().toString());
 
 			if (!isNullOrEmpty(edtAccountPhone.getText().toString()) && !isValidMsisdn(edtAccountPhone.getText().toString())) {
 				edtAccountPhone.setError("Mobile number is not valid");
@@ -147,8 +149,8 @@ public class AddCashoutActivity extends AppCompatActivity {
 				return;
 			}
 
-			walletAccount.setWalletPhone(edtAccountPhone.getText().toString());
-			walletAccount.setWalletEmail(edtAccountEmail.getText().toString());
+			walletAccount.setWalletPhone(isNullOrEmpty(edtAccountPhone.getText().toString()) ? null : edtAccountPhone.getText().toString());
+			walletAccount.setWalletEmail(isNullOrEmpty(edtAccountEmail.getText().toString()) ? null : edtAccountEmail.getText().toString());
 
 			switch (walletAccount.getCashoutOption().getAccountType()) {
 				case MOBILE_BANK_ACCOUNT:
@@ -161,9 +163,23 @@ public class AddCashoutActivity extends AppCompatActivity {
 					walletAccount.setWalletAccountNumber(walletAccount.getWalletPhone());
 					break;
 				case BANK_ACCOUNT:
-					walletAccount.setWalletName(edtBankAccountName.getText().toString());
-					walletAccount.setWalletAccountNumber(edtBankAccountNumber.getText().toString());
-					walletAccount.setWalletAccountBranch(edtBankBranch.getText().toString());
+
+					if (!isNullOrEmpty(edtBankAccountName.getText().toString()) && !isValidName(edtBankAccountName.getText().toString())) {
+						edtBankAccountName.setError("Account Name is not valid");
+						edtBankAccountName.requestFocus();
+						return;
+					} else if (!isNullOrEmpty(edtBankAccountNumber.getText().toString()) && !isNumeric(edtBankAccountNumber.getText().toString())) {
+						edtBankAccountNumber.setError("Account Number is not valid");
+						edtBankAccountNumber.requestFocus();
+						return;
+					} else if (!isNullOrEmpty(edtBankBranch.getText().toString()) && !isNumeric(edtBankBranch.getText().toString())) {
+						edtBankBranch.setError("Branch code is not valid");
+						edtBankBranch.requestFocus();
+						return;
+					}
+					walletAccount.setWalletName(isNullOrEmpty(edtBankAccountName.getText().toString()) ? null : edtBankAccountName.getText().toString());
+					walletAccount.setWalletAccountNumber(isNullOrEmpty(edtBankAccountNumber.getText().toString()) ? null : edtBankAccountNumber.getText().toString());
+					walletAccount.setWalletAccountBranch(isNullOrEmpty(edtBankBranch.getText().toString()) ? null : edtBankBranch.getText().toString());
 					break;
 				case ONLINE_BANK_ACCOUNT:
 					if (!isValidEmail(walletAccount.getWalletEmail())) {
@@ -171,7 +187,7 @@ public class AddCashoutActivity extends AppCompatActivity {
 						edtAccountEmail.requestFocus();
 						return;
 					}
-					walletAccount.setWalletAccountNumber(edtAccountEmail.getText().toString());
+					walletAccount.setWalletAccountNumber(walletAccount.getWalletEmail());
 					break;
 			}
 
