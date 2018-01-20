@@ -5,12 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import net.beyondtelecom.gopayswipe.TabCashoutOptions;
 import net.beyondtelecom.gopayswipe.TabCharge;
+import net.beyondtelecom.gopayswipe.TabWallet;
 
-/**
- * Created by Edwin on 15/02/2015.
- */
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
@@ -37,8 +34,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         }
         else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
-            TabCashoutOptions tabCashoutOptions = new TabCashoutOptions();
-            return tabCashoutOptions;
+            TabWallet tabWallet = new TabWallet();
+            return tabWallet;
         }
 
     }

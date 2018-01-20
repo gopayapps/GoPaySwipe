@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"Transaction","Cashout Options"};
+    CharSequence Titles[]={"Transaction","Wallet"};
     int Numboftabs =2;
 
     @Override

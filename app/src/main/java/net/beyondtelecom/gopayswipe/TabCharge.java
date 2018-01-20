@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static net.beyondtelecom.gopayswipe.LoginActivity.getGoPayDB;
-import static net.beyondtelecom.gopayswipe.TabCashoutOptions.getCashoutDetails;
+import static net.beyondtelecom.gopayswipe.TabWallet.getCashoutDetails;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNumeric;
 import static net.beyondtelecom.gopayswipe.dto.CardType.UNKNOWN;

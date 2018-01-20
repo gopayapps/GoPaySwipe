@@ -24,7 +24,7 @@ import static net.beyondtelecom.gopayswipe.MainActivity.getMainActivity;
 /**
  * Created by Edwin on 15/02/2015.
  */
-public class TabCashoutOptions extends Fragment {
+public class TabWallet extends Fragment {
 
     private View tabCashoutOptionsView;
     private LinearLayout frmCashoutOptions;
@@ -34,7 +34,7 @@ public class TabCashoutOptions extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        tabCashoutOptionsView = inflater.inflate(R.layout.tab_cashout_options,container,false);
+        tabCashoutOptionsView = inflater.inflate(R.layout.tab_wallet,container,false);
         btnAddCashoutOption = (FloatingActionButton) tabCashoutOptionsView.findViewById(R.id.btnAddCashoutOption);
         frmCashoutOptions = (LinearLayout) tabCashoutOptionsView.findViewById(R.id.frmCashoutOptions);
 

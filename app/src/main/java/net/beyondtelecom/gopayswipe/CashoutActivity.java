@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 import static net.beyondtelecom.gopayswipe.LoginActivity.getGoPayDB;
-import static net.beyondtelecom.gopayswipe.TabCashoutOptions.getCashoutDetails;
-import static net.beyondtelecom.gopayswipe.TabCashoutOptions.getCashoutWalletAcount;
+import static net.beyondtelecom.gopayswipe.TabWallet.getCashoutDetails;
+import static net.beyondtelecom.gopayswipe.TabWallet.getCashoutWalletAcount;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidCardPin;
 
