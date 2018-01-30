@@ -24,4 +24,5 @@ dependencies {
 	compile "com.android.support:appcompat-v7:25.3.0"
 	compile "com.android.support:design:25.3.0"
 	compile files('libs/square.jar')
+	compile files('libs/ormlite-core-5.0.jar')
 }

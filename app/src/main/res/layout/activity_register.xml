@@ -59,7 +59,7 @@
                     android:textSize="16sp" />
 
                 <AutoCompleteTextView
-                    android:id="@+id/txtRegFirstname"
+                    android:id="@+id/txtRegFirstName"
                     android:layout_width="@dimen/activity_ui_items"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -70,11 +70,22 @@
                     android:textSize="16sp" />
 
                 <AutoCompleteTextView
-                    android:id="@+id/txtRegLastname"
+                    android:id="@+id/txtRegLastName"
                     android:layout_width="@dimen/activity_ui_items"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:hint="@string/prompt_lname"
+                    android:inputType="textCapWords"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/txtRegCompanyName"
+                    android:layout_width="@dimen/activity_ui_items"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="@string/prompt_cname"
                     android:inputType="textCapWords"
                     android:maxLines="1"
                     android:singleLine="true"

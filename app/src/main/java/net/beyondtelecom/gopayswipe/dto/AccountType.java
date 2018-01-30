@@ -5,7 +5,7 @@ package net.beyondtelecom.gopayswipe.dto;
  */
 
 public enum AccountType {
-    MOBILE_BANK_ACCOUNT,
-    BANK_ACCOUNT,
-    ONLINE_BANK_ACCOUNT
+    BANK,
+    MOBILE_BANK,
+    ONLINE_BANK
 }

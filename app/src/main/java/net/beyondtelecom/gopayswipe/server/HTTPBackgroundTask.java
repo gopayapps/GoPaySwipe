@@ -41,6 +41,7 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseObject> 
     private static final String SERVER_URL = "http://GHOST:8080/bt_api-1.0.0/bt/server/json/";
     public static final String SESSION_URL = SERVER_URL + "goPay/session";
     public static final String REGISTER_URL = SERVER_URL + "goPay/user";
+    public static final String FINANCIAL_INSTITUTIONS_URL = SERVER_URL + "financialInstitution";
     public static final String USER_URL = SERVER_URL + "user";
     public enum TASK_TYPE { POST, PUT, GET }
     private static final Integer CONNECT_TIMEOUT = 10000;
@@ -65,15 +66,8 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseObject> 
 
     @Override
     protected BTResponseObject doInBackground(Void... params) {
-        Enumeration keys = this.params.keys();
-        StringBuilder paramsBuilder = new StringBuilder();
-        while (keys.hasMoreElements()) {
-            String key = (String)keys.nextElement();
-            paramsBuilder.append(key).append("=").append(this.params.get(key));
-            if (keys.hasMoreElements()) { paramsBuilder.append("&"); }
-        }
 
-        Log.i(TAG, "Performing background tasks, params: " + paramsBuilder.toString());
+        Log.i(TAG, "Performing background " + taskType.name() + " to " + requestURL);
 
         final String responseString = sendServerRequest();
 
@@ -141,7 +135,7 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseObject> 
 
             String connectionURL = requestURL;
 
-            if (taskType.equals(GET) && params.size() > 0) {
+            if (taskType.equals(GET) && params != null && params.size() > 0) {
                 StringBuilder getParams = new StringBuilder();
                 Log.i(TAG, "Appending query parameters for GET");
                 Enumeration keys = params.keys();
@@ -185,7 +179,7 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseObject> 
 
 
             if (taskType.equals(POST)) {
-                DataOutputStream writer = null;
+                DataOutputStream writer;
                 Log.i(TAG, "Appending parameters for POST");
                 StringBuilder postParams = new StringBuilder();
                 Enumeration keys = params.keys();

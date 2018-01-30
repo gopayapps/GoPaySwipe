@@ -8,17 +8,19 @@ public class UserDetails {
 	String username;
 	String firstName;
 	String lastName;
+	String companyName;
 	String msisdn;
 	String email;
 	String pin;
 
 	public UserDetails() {}
 
-	public UserDetails(String username, String firstName, String lastName, String msisdn,
-					   String email, String pin) {
+	public UserDetails(String username, String firstName, String lastName, String companyName,
+					   String msisdn, String email, String pin) {
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.companyName = companyName;
 		this.msisdn = msisdn;
 		this.email = email;
 		this.pin = pin;
@@ -46,6 +48,14 @@ public class UserDetails {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 	public String getMsisdn() {

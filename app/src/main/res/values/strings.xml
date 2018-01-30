@@ -8,7 +8,7 @@
 		<item>Local Bank Account</item>
 		<item>EcoCash</item>
 		<item>Telecash</item>
-		<item>GetCash</item>
+		<item>OneMoney</item>
 	</string-array>
 	<string-array name="currency_type">
 		<item>USD</item>
@@ -37,6 +37,7 @@
 	<string name="prompt_username">Username</string>
 	<string name="prompt_fname">Firstname</string>
 	<string name="prompt_lname">Lastname</string>
+	<string name="prompt_cname">Company Name</string>
 	<string name="prompt_email">Email</string>
 	<string name="prompt_phone">Phone Number</string>
 	<string name="prompt_gopay_pin">GoPay Pin</string>

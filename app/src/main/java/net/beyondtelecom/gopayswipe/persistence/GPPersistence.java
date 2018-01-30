@@ -26,7 +26,7 @@ import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 public class GPPersistence extends SQLiteOpenHelper {
 
 	// If you change the database schema, you must increment the database version.
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 3;
 
 	private static final String TAG = getTag(GPPersistence.class);
 
@@ -53,6 +53,7 @@ public class GPPersistence extends SQLiteOpenHelper {
 				"username VARCHAR(50)," +
 				"first_name VARCHAR(50)," +
 				"last_name VARCHAR(50)," +
+				"company_name VARCHAR(50)," +
 				"msisdn VARCHAR(12)," +
 				"email VARCHAR(255)," +
 				"pin VARCHAR(50))");
@@ -77,26 +78,26 @@ public class GPPersistence extends SQLiteOpenHelper {
 				"wallet_email VARCHAR(50))");
 
 		db.execSQL("INSERT INTO " + CASHOUT_OPTION + " (cashout_option_name,cashout_option_type) VALUES " +
-				" ('EcoCash','" + AccountType.MOBILE_BANK_ACCOUNT.name() + "')," +
-				" ('Telecash','" + AccountType.MOBILE_BANK_ACCOUNT.name() + "')," +
-				" ('NetCash','" + AccountType.MOBILE_BANK_ACCOUNT.name() + "')," +
-				" ('PayPal','" + AccountType.ONLINE_BANK_ACCOUNT.name() + "')," +
-				" ('Skrill','" + AccountType.ONLINE_BANK_ACCOUNT.name() + "')," +
-				" ('Agribank','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('BancABC','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('Barclays Bank','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('CABS','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('CBZ','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('Ecobank','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('FBC','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('MBCA','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('Metbank','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('NMB','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('POSB','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('Stanbic Bank','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('Standard Chartered','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('Steward Bank','" + AccountType.BANK_ACCOUNT.name() + "')," +
-				" ('ZB Bank','" + AccountType.BANK_ACCOUNT.name() + "')");
+				" ('EcoCash','" + AccountType.MOBILE_BANK.name() + "')," +
+				" ('Telecash','" + AccountType.MOBILE_BANK.name() + "')," +
+				" ('NetCash','" + AccountType.MOBILE_BANK.name() + "')," +
+				" ('PayPal','" + AccountType.ONLINE_BANK.name() + "')," +
+				" ('Skrill','" + AccountType.ONLINE_BANK.name() + "')," +
+				" ('Agribank','" + AccountType.BANK.name() + "')," +
+				" ('BancABC','" + AccountType.BANK.name() + "')," +
+				" ('Barclays Bank','" + AccountType.BANK.name() + "')," +
+				" ('CABS','" + AccountType.BANK.name() + "')," +
+				" ('CBZ','" + AccountType.BANK.name() + "')," +
+				" ('Ecobank','" + AccountType.BANK.name() + "')," +
+				" ('FBC','" + AccountType.BANK.name() + "')," +
+				" ('MBCA','" + AccountType.BANK.name() + "')," +
+				" ('Metbank','" + AccountType.BANK.name() + "')," +
+				" ('NMB','" + AccountType.BANK.name() + "')," +
+				" ('POSB','" + AccountType.BANK.name() + "')," +
+				" ('Stanbic Bank','" + AccountType.BANK.name() + "')," +
+				" ('Standard Chartered','" + AccountType.BANK.name() + "')," +
+				" ('Steward Bank','" + AccountType.BANK.name() + "')," +
+				" ('ZB Bank','" + AccountType.BANK.name() + "')");
 
 		db.execSQL("INSERT INTO " + CURRENCY_TYPE + " (currency_type_id,currency_type_name) VALUES " +
 				" (1, 'USD')," +
@@ -197,9 +198,10 @@ public class GPPersistence extends SQLiteOpenHelper {
 		userDetails.setUsername(userData.isNull(0) ? null : userData.getString(0));
 		userDetails.setFirstName(userData.isNull(1) ? null : userData.getString(1));
 		userDetails.setLastName(userData.isNull(2) ? null : userData.getString(2));
-		userDetails.setMsisdn(userData.isNull(3) ? null : userData.getString(3));
-		userDetails.setEmail(userData.isNull(4) ? null : userData.getString(4));
-		userDetails.setPin(userData.isNull(5) ? null : userData.getString(5));
+		userDetails.setCompanyName(userData.isNull(3) ? null : userData.getString(3));
+		userDetails.setMsisdn(userData.isNull(4) ? null : userData.getString(4));
+		userDetails.setEmail(userData.isNull(5) ? null : userData.getString(5));
+		userDetails.setPin(userData.isNull(6) ? null : userData.getString(6));
 		return userDetails;
 	}
 
@@ -253,13 +255,14 @@ public class GPPersistence extends SQLiteOpenHelper {
 
 	public void setUserDetails(UserDetails newUserDetails) {
 		getGPWritableDatabase().execSQL("DELETE FROM " + USER_DETAILS);
-		String sql = "INSERT INTO " + USER_DETAILS + "(username,first_name,last_name,msisdn,email,pin) VALUES (" +
+		String sql = "INSERT INTO " + USER_DETAILS + "(username,first_name,last_name,company_name,msisdn,email,pin) VALUES (" +
 			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getUsername() + "'") + "," +
-			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getFirstName() + "'") + "," +
-			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getLastName() + "'") + "," +
-			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getMsisdn() + "'") + "," +
-			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getEmail() + "'") + "," +
-			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getPin() + "'") + ")";
+			(isNullOrEmpty(newUserDetails.getFirstName()) ? null : "'" + newUserDetails.getFirstName() + "'") + "," +
+			(isNullOrEmpty(newUserDetails.getLastName()) ? null : "'" + newUserDetails.getLastName() + "'") + "," +
+			(isNullOrEmpty(newUserDetails.getCompanyName()) ? null : "'" + newUserDetails.getCompanyName() + "'") + "," +
+			(isNullOrEmpty(newUserDetails.getMsisdn()) ? null : "'" + newUserDetails.getMsisdn() + "'") + "," +
+			(isNullOrEmpty(newUserDetails.getEmail()) ? null : "'" + newUserDetails.getEmail() + "'") + "," +
+			(isNullOrEmpty(newUserDetails.getPin()) ? null : "'" + newUserDetails.getPin() + "'") + ")";
 		getGPWritableDatabase().execSQL(sql);
 	}
 }

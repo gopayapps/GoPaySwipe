@@ -40,8 +40,9 @@ public class RegisterActivity extends AppCompatActivity {
 	protected RegisterActivity registerActivity;
 	private ProgressBar progressBar;
 	private EditText txtRegUsername;
-	private EditText txtRegFirstname;
-	private EditText txtRegLastname;
+	private EditText txtRegFirstName;
+	private EditText txtRegLastName;
+	private EditText txtRegCompanyName;
 	private EditText txtRegMsisdn;
 	private EditText txtRegEmail;
 	private EditText txtRegPin;
@@ -57,8 +58,9 @@ public class RegisterActivity extends AppCompatActivity {
 		progressBar = (ProgressBar) findViewById(R.id.prgRegister);
 
 		txtRegUsername = (EditText) findViewById(R.id.txtRegUsername);
-		txtRegFirstname = (EditText) findViewById(R.id.txtRegFirstname);
-		txtRegLastname = (EditText) findViewById(R.id.txtRegLastname);
+		txtRegFirstName = (EditText) findViewById(R.id.txtRegFirstName);
+		txtRegLastName = (EditText) findViewById(R.id.txtRegLastName);
+		txtRegCompanyName = (EditText) findViewById(R.id.txtRegCompanyName);
 		txtRegMsisdn = (EditText) findViewById(R.id.txtRegMsisdn);
 		txtRegEmail = (EditText) findViewById(R.id.txtRegEmail);
 		txtRegPin = (EditText) findViewById(R.id.txtRegPin);
@@ -71,16 +73,18 @@ public class RegisterActivity extends AppCompatActivity {
 	public boolean isValidInputs() {
 
 		txtRegUsername.setError(null);
-		txtRegFirstname.setError(null);
-		txtRegLastname.setError(null);
+		txtRegFirstName.setError(null);
+		txtRegLastName.setError(null);
+		txtRegCompanyName.setError(null);
 		txtRegMsisdn.setError(null);
 		txtRegEmail.setError(null);
 		txtRegPin.setError(null);
 		txtRegRPin.setError(null);
 
 		String username = txtRegUsername.getText().toString();
-		String fname = txtRegFirstname.getText().toString();
-		String lname = txtRegLastname.getText().toString();
+		String fname = txtRegFirstName.getText().toString();
+		String lname = txtRegLastName.getText().toString();
+		String cname = txtRegCompanyName.getText().toString();
 		String msisdn = txtRegMsisdn.getText().toString();
 		String email = txtRegEmail.getText().toString();
 		String pin = txtRegPin.getText().toString();
@@ -97,22 +101,28 @@ public class RegisterActivity extends AppCompatActivity {
 		}
 
 		if (!TextUtils.isEmpty(fname) && !isValidName(fname)) {
-			txtRegFirstname.setError(getString(R.string.error_invalid_name));
-			txtRegFirstname.requestFocus();
+			txtRegFirstName.setError(getString(R.string.error_invalid_name));
+			txtRegFirstName.requestFocus();
 			return false;
 		} else if (TextUtils.isEmpty(fname)) {
-			txtRegFirstname.setError(getString(R.string.error_field_required));
-			txtRegFirstname.requestFocus();
+			txtRegFirstName.setError(getString(R.string.error_field_required));
+			txtRegFirstName.requestFocus();
 			return false;
 		}
 
 		if (!TextUtils.isEmpty(lname) && !isValidName(lname)) {
-			txtRegLastname.setError(getString(R.string.error_invalid_name));
-			txtRegLastname.requestFocus();
+			txtRegLastName.setError(getString(R.string.error_invalid_name));
+			txtRegLastName.requestFocus();
 			return false;
 		} else if (TextUtils.isEmpty(lname)) {
-			txtRegLastname.setError(getString(R.string.error_field_required));
-			txtRegLastname.requestFocus();
+			txtRegLastName.setError(getString(R.string.error_field_required));
+			txtRegLastName.requestFocus();
+			return false;
+		}
+
+		if (!TextUtils.isEmpty(cname) && !isValidName(cname)) {
+			txtRegCompanyName.setError(getString(R.string.error_invalid_name));
+			txtRegCompanyName.requestFocus();
 			return false;
 		}
 
@@ -187,8 +197,9 @@ public class RegisterActivity extends AppCompatActivity {
 
 			final Hashtable registerParams = new Hashtable<>();
 			registerParams.put("username", txtRegUsername.getText().toString());
-			registerParams.put("firstName", txtRegFirstname.getText().toString());
-			registerParams.put("lastName", txtRegLastname.getText().toString());
+			registerParams.put("firstName", txtRegFirstName.getText().toString());
+			registerParams.put("lastName", txtRegLastName.getText().toString());
+			registerParams.put("companyName", txtRegCompanyName.getText().toString());
 			registerParams.put("msisdn", txtRegMsisdn.getText().toString());
 			registerParams.put("email", txtRegEmail.getText().toString());
 			registerParams.put("deviceId", getDeviceIMEI(this));
@@ -223,8 +234,9 @@ public class RegisterActivity extends AppCompatActivity {
 					if (registerResponse.getResponseCode().equals(SUCCESS)) {
 						UserDetails newUserDetails = new UserDetails(
 							txtRegUsername.getText().toString(),
-							txtRegFirstname.getText().toString(),
-							txtRegLastname.getText().toString(),
+							txtRegFirstName.getText().toString(),
+							txtRegLastName.getText().toString(),
+							txtRegCompanyName.getText().toString(),
 							txtRegMsisdn.getText().toString(),
 							txtRegEmail.getText().toString(),
 							txtRegPin.getText().toString()
