@@ -4,19 +4,19 @@ import java.math.BigDecimal;
 
 public class CashoutDetails {
 
-	WalletAccount walletAccount;
+	CashoutAccount cashoutAccount;
 	String cashoutId;
 	BigDecimal cashoutAmount;
 	String cashoutCurrency;
 	String cashoutReference;
 	Integer cashoutPin;
 
-	public WalletAccount getWalletAccount() {
-		return walletAccount;
+	public CashoutAccount getCashoutAccount() {
+		return cashoutAccount;
 	}
 
-	public void setWalletAccount(WalletAccount walletAccount) {
-		this.walletAccount = walletAccount;
+	public void setCashoutAccount(CashoutAccount cashoutAccount) {
+		this.cashoutAccount = cashoutAccount;
 	}
 
 	public String getCashoutId() {

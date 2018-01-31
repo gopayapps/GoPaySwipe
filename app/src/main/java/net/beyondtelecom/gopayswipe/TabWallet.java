@@ -1,35 +1,36 @@
 package net.beyondtelecom.gopayswipe;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.beyondtelecom.gopayswipe.dto.CashoutAccount;
 import net.beyondtelecom.gopayswipe.dto.CashoutDetails;
-import net.beyondtelecom.gopayswipe.dto.WalletAccount;
 
 import java.util.ArrayList;
 
 import static android.view.View.inflate;
 import static java.lang.String.format;
-import static net.beyondtelecom.gopayswipe.LoginActivity.getGoPayDB;
 import static net.beyondtelecom.gopayswipe.MainActivity.getMainActivity;
+import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getCashoutAccounts;
+import static net.beyondtelecom.gopayswipe.common.ActivityCommon.removeCashoutAccount;
+import static net.beyondtelecom.gopayswipe.common.BTResponseCode.SUCCESS;
 
-/**
- * Created by Edwin on 15/02/2015.
- */
 public class TabWallet extends Fragment {
 
     private View tabCashoutOptionsView;
     private LinearLayout frmCashoutOptions;
     private FloatingActionButton btnAddCashoutOption;
-    private static WalletAccount cashoutWalletAcount;
+    private static CashoutAccount cashoutAccount;
     private static CashoutDetails cashoutDetails;
 
     @Override
@@ -63,16 +64,16 @@ public class TabWallet extends Fragment {
         return cashoutDetails;
     }
 
-    public static WalletAccount getCashoutWalletAcount() {
-        return cashoutWalletAcount;
+    public static CashoutAccount getCashoutAccount() {
+        return cashoutAccount;
     }
 
     public void populateCashoutOptions() {
 
         frmCashoutOptions.removeAllViews();
-        ArrayList<WalletAccount> cashoutDetails = getGoPayDB().getWalletAccounts();
-        if (cashoutDetails == null) { return; }
-        for (final WalletAccount cashoutDetail : cashoutDetails) {
+        ArrayList<CashoutAccount> cashoutAccounts = getCashoutAccounts(getMainActivity());
+        if (cashoutAccounts == null) { return; }
+        for (final CashoutAccount cashoutAccount : cashoutAccounts) {
             View detailsView = inflate(getMainActivity(), R.layout.layout_cashout_option, null);
             TextView txvCashoutType = (TextView)detailsView.findViewById(R.id.txvCashoutType);
             TextView txvNickname = (TextView)detailsView.findViewById(R.id.txvNickname);
@@ -82,21 +83,35 @@ public class TabWallet extends Fragment {
             btnDeleteCashout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getGoPayDB().deleteWalletAccount(cashoutDetail.getWalletAccountId());
-                    populateCashoutOptions();
+
+                    new AlertDialog.Builder(getMainActivity()).setTitle("Exit Application?")
+                        .setMessage("Are you sure you want to remove this cashout option?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if (removeCashoutAccount(getMainActivity(), cashoutAccount).equals(SUCCESS)) {
+                                        populateCashoutOptions();
+                                    }
+                                }
+                            })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                        }).create().show();
                 }
             });
             btnStartCashout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cashoutWalletAcount = cashoutDetail;
+                    TabWallet.cashoutAccount = cashoutAccount;
                     Intent intent = new Intent(getMainActivity(), CashoutActivity.class);
                     startActivity(intent);
                 }
             });
-            txvCashoutType.setText(format("%d. %s", cashoutDetail.getWalletAccountId(), cashoutDetail.getCashoutOption().getCashoutOptionName()));
-            txvNickname.setText(format("Nickname: %s", cashoutDetail.getWalletNickname()));
-            txvAccountNumber.setText(format("Account Number: %s", cashoutDetail.getWalletAccountNumber()));
+            txvCashoutType.setText(format("%s. %s", cashoutAccount.getCashoutAccountId(), cashoutAccount.getFinancialInstitution().getInstitutionName()));
+            txvNickname.setText(format("Nickname: %s", cashoutAccount.getAccountNickName()));
+            txvAccountNumber.setText(format("Account Number: %s", cashoutAccount.getAccountNumber()));
             frmCashoutOptions.addView(detailsView);
         }
     }

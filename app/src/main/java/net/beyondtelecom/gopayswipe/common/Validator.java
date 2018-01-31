@@ -1,5 +1,8 @@
 package net.beyondtelecom.gopayswipe.common;
 
+import java.math.BigDecimal;
+import java.util.regex.Pattern;
+
 /**
  * User: tkaviya
  * Date: 3/27/2015
@@ -24,10 +27,27 @@ public class Validator
     private static final Integer MIN_CARD_LEN = 13;
     private static final Integer MAX_CARD_LEN = 19;
 
-	public static boolean isNumeric(Object testObject) {
+    public static final Integer MIN_PLAIN_TEXT_LEN = 2;
+    public static final Integer MAX_PLAIN_TEXT_LEN = 50;
+
+    public static final String PLAIN_TEXT_CHARS = "[_a-zA-Z0-9- ]";
+
+    public static final String PLAIN_TEXT_REGEX = PLAIN_TEXT_CHARS + "{" + MIN_PLAIN_TEXT_LEN + "," + MAX_PLAIN_TEXT_LEN + "}";
+
+
+    public static final Pattern plainTextPattern = Pattern.compile(PLAIN_TEXT_REGEX);
+
+
+    public static boolean isNumeric(Object testObject) {
         if (testObject == null) return false;
-        try { Float.parseFloat(String.valueOf(testObject)); return true; }
+        if (testObject instanceof Number) return true;
+        try { new BigDecimal(String.valueOf(testObject)); return true; }
         catch (Exception e) { return false; }
+    }
+
+
+    public static boolean isValidPlainText(String text) {
+        return !isNullOrEmpty(text) && plainTextPattern.matcher(text).matches();
     }
 
 	public static boolean isValidEmail(String emailAddress) {

@@ -40,20 +40,20 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseObject> 
     private static final String TAG = ActivityCommon.getTag(HTTPBackgroundTask.class);
     private static final String SERVER_URL = "http://GHOST:8080/bt_api-1.0.0/bt/server/json/";
     public static final String SESSION_URL = SERVER_URL + "goPay/session";
-    public static final String REGISTER_URL = SERVER_URL + "goPay/user";
+    public static final String USER_URL = SERVER_URL + "goPay/user";
     public static final String FINANCIAL_INSTITUTIONS_URL = SERVER_URL + "financialInstitution";
-    public static final String USER_URL = SERVER_URL + "user";
-    public enum TASK_TYPE { POST, PUT, GET }
+    public static final String CURRENCY_URL = SERVER_URL + "currency";
+    public enum TASK_TYPE { POST, PUT, GET, DELETE }
     private static final Integer CONNECT_TIMEOUT = 10000;
     private static final Integer READ_TIMEOUT = 20000;
     private final ProgressDialog progressDialog;
-    private final Hashtable params;
+    private final Hashtable<String, String> params;
     private final TASK_TYPE taskType;
     private final String requestURL;
     private BTResponseCode btResponseCode;
 
     public HTTPBackgroundTask(Activity activity, TASK_TYPE taskType,
-                              String requestURL, Hashtable params) {
+                              String requestURL, Hashtable<String, String> params) {
         this.progressDialog = new ProgressDialog(activity);
         this.taskType = taskType;
         this.requestURL = requestURL;
@@ -73,8 +73,6 @@ public class HTTPBackgroundTask extends AsyncTask<Void, Void, BTResponseObject> 
 
         try
         {
-            Log.i(TAG, "Response String: " + responseString);
-
             if (responseString == null) {
                 return new BTResponseObject(btResponseCode);
             }

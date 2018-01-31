@@ -18,8 +18,6 @@ import net.beyondtelecom.gopayswipe.common.ActivityCommon;
 import net.beyondtelecom.gopayswipe.common.BTResponseCode;
 import net.beyondtelecom.gopayswipe.common.BTResponseObject;
 import net.beyondtelecom.gopayswipe.common.Validator;
-import net.beyondtelecom.gopayswipe.dto.UserDetails;
-import net.beyondtelecom.gopayswipe.persistence.GPPersistence;
 import net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask;
 
 import java.util.Hashtable;
@@ -28,24 +26,15 @@ import java.util.concurrent.ExecutionException;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getDeviceIMEI;
+import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getUserDetails;
 import static net.beyondtelecom.gopayswipe.common.BTResponseCode.SUCCESS;
 import static net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask.SESSION_URL;
 import static net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask.TASK_TYPE.POST;
 
-/**
- * A login screen that offers login via email/password and via Google+ sign in.
- * <p/>
- * ************ IMPORTANT SETUP NOTES: ************
- * In order for Google+ sign in to work with your app, you must first go to:
- * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
- * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
- */
 public class LoginActivity extends AppCompatActivity {
 
 	private static final String TAG = ActivityCommon.getTag(LoginActivity.class);
 	protected LoginActivity loginActivity;
-	protected static UserDetails userDetails;
-	protected static GPPersistence goPayDB = null;
 	private ProgressBar progressBar;
 	private EditText edtUsername;
 //	private EditText txtName;
@@ -58,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		loginActivity = this;
-		goPayDB = new GPPersistence(getApplicationContext());
 
 		progressBar = (ProgressBar) findViewById(R.id.prgLogin);
 
@@ -83,11 +71,9 @@ public class LoginActivity extends AppCompatActivity {
 		displayUserDetails();
 	}
 
-	public static GPPersistence getGoPayDB() { return goPayDB; }
-
 	public void displayUserDetails() {
-		if (getUserDetails() != null) {
-			edtUsername.setText(getUserDetails().getUsername());
+		if (getUserDetails(this) != null) {
+			edtUsername.setText(getUserDetails(this).getUsername());
 			edtPin.requestFocus();
 		} else {
 			edtUsername.requestFocus();
@@ -151,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
 
 		if (isValidInputs()) {
 
-			final Hashtable loginParams = new Hashtable();
+			final Hashtable<String, String> loginParams = new Hashtable<>();
 			loginParams.put("username", edtUsername.getText().toString());
 			loginParams.put("pin", edtPin.getText().toString());
 			loginParams.put("deviceId", getDeviceIMEI(this));
@@ -193,21 +179,6 @@ public class LoginActivity extends AppCompatActivity {
 				}
             });
 		}
-	}
-
-	public LoginActivity getLoginActivity() {
-		return loginActivity;
-	}
-
-	public UserDetails getUserDetails() {
-		if (userDetails == null && getGoPayDB() != null) {
-			Log.i(TAG, "Checking for existing registered user");
-			userDetails = getGoPayDB().getUserDetails();
-			if (userDetails != null) {
-				Log.i(TAG, "Found existing registered user " + userDetails.getUsername());
-			}
-		}
-		return userDetails;
 	}
 }
 

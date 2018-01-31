@@ -18,9 +18,9 @@ import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
-import static net.beyondtelecom.gopayswipe.LoginActivity.getGoPayDB;
+import static net.beyondtelecom.gopayswipe.TabWallet.getCashoutAccount;
 import static net.beyondtelecom.gopayswipe.TabWallet.getCashoutDetails;
-import static net.beyondtelecom.gopayswipe.TabWallet.getCashoutWalletAcount;
+import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getCurrencies;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidCardPin;
 
@@ -55,7 +55,7 @@ public class CashoutActivity extends AppCompatActivity {
 
     private void populateCurrencies() {
 
-        ArrayList<CurrencyType> currencyTypes = getGoPayDB().getCurrencyTypes();
+        ArrayList<CurrencyType> currencyTypes = getCurrencies(this);
         ArrayAdapter<CharSequence> currencyTypeAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item);
 
@@ -79,24 +79,24 @@ public class CashoutActivity extends AppCompatActivity {
     private void populateCashoutDetails() {
 
         txvCashoutAccountType.setText(format("Cashout to %s : %s : %s",
-            getCashoutWalletAcount().getWalletNickname(),
-            getCashoutWalletAcount().getCashoutOption().getCashoutOptionName(),
-            getCashoutWalletAcount().getWalletAccountNumber())
+            getCashoutAccount().getAccountNickName(),
+            getCashoutAccount().getFinancialInstitution().getInstitutionName(),
+            getCashoutAccount().getAccountNumber())
         );
 
         StringBuilder accountDetails = new StringBuilder();
 
-        if (!isNullOrEmpty(getCashoutWalletAcount().getWalletName())) {
-            accountDetails.append(format("Account Name: %s\n", getCashoutWalletAcount().getWalletName()));
+        if (!isNullOrEmpty(getCashoutAccount().getAccountName())) {
+            accountDetails.append(format("Account Name: %s\n", getCashoutAccount().getAccountName()));
         }
-        if (!isNullOrEmpty(getCashoutWalletAcount().getWalletAccountBranch())) {
-            accountDetails.append(format("Account Branch: %s\n", getCashoutWalletAcount().getWalletAccountBranch()));
+        if (!isNullOrEmpty(getCashoutAccount().getAccountBranchCode())) {
+            accountDetails.append(format("Account Branch: %s\n", getCashoutAccount().getAccountBranchCode()));
         }
-        if (!isNullOrEmpty(getCashoutWalletAcount().getWalletEmail())) {
-            accountDetails.append(format("Account Email: %s\n", getCashoutWalletAcount().getWalletEmail()));
+        if (!isNullOrEmpty(getCashoutAccount().getAccountEmail())) {
+            accountDetails.append(format("Account Email: %s\n", getCashoutAccount().getAccountEmail()));
         }
-        if (!isNullOrEmpty(getCashoutWalletAcount().getWalletPhone())) {
-            accountDetails.append(format("Account Phone: %s\n", getCashoutWalletAcount().getWalletPhone()));
+        if (!isNullOrEmpty(getCashoutAccount().getAccountPhone())) {
+            accountDetails.append(format("Account Phone: %s\n", getCashoutAccount().getAccountPhone()));
         }
 
         txvCashoutAccountDetails.setText(accountDetails.toString());

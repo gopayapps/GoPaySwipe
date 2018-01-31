@@ -17,20 +17,25 @@ import net.beyondtelecom.gopayswipe.common.ActivityCommon;
 import net.beyondtelecom.gopayswipe.common.BTResponseCode;
 import net.beyondtelecom.gopayswipe.common.BTResponseObject;
 import net.beyondtelecom.gopayswipe.dto.UserDetails;
-import net.beyondtelecom.gopayswipe.persistence.GPPersistence;
 import net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask;
+
+import org.json.JSONObject;
 
 import java.util.Hashtable;
 import java.util.concurrent.ExecutionException;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
+import static java.lang.String.format;
+import static net.beyondtelecom.gopayswipe.common.ActivityCommon.clearUserDetailsCache;
 import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getDeviceIMEI;
+import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getGoPayDB;
 import static net.beyondtelecom.gopayswipe.common.BTResponseCode.SUCCESS;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidEmail;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidMsisdn;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidName;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidPin;
+import static net.beyondtelecom.gopayswipe.common.Validator.isValidPlainText;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidUsername;
 import static net.beyondtelecom.gopayswipe.server.HTTPBackgroundTask.TASK_TYPE.POST;
 
@@ -120,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
 			return false;
 		}
 
-		if (!TextUtils.isEmpty(cname) && !isValidName(cname)) {
+		if (!TextUtils.isEmpty(cname) && !isValidPlainText(cname)) {
 			txtRegCompanyName.setError(getString(R.string.error_invalid_name));
 			txtRegCompanyName.requestFocus();
 			return false;
@@ -206,7 +211,7 @@ public class RegisterActivity extends AppCompatActivity {
 			registerParams.put("pin", txtRegPin.getText().toString());
 
 			final HTTPBackgroundTask registerTask = new HTTPBackgroundTask(
-				this, POST, HTTPBackgroundTask.REGISTER_URL, registerParams
+				this, POST, HTTPBackgroundTask.USER_URL, registerParams
 			);
 
 			runOnUiThread(new Runnable() {
@@ -232,25 +237,48 @@ public class RegisterActivity extends AppCompatActivity {
 					Log.i(TAG, "Registration Response: " + responseMsg);
 
 					if (registerResponse.getResponseCode().equals(SUCCESS)) {
-						UserDetails newUserDetails = new UserDetails(
-							txtRegUsername.getText().toString(),
-							txtRegFirstName.getText().toString(),
-							txtRegLastName.getText().toString(),
-							txtRegCompanyName.getText().toString(),
-							txtRegMsisdn.getText().toString(),
-							txtRegEmail.getText().toString(),
-							txtRegPin.getText().toString()
-						);
-						GPPersistence goPayDB = LoginActivity.getGoPayDB();
-						goPayDB.setUserDetails(newUserDetails);
-						finish();
-						Intent mainIntent = new Intent(registerActivity, MainActivity.class);
-						startActivity(mainIntent);
-						runOnUiThread(new Runnable() {
-							public void run() {
+
+						try {
+
+							JSONObject responseJSON = new JSONObject(registerResponse.getResponseObject().toString());
+
+							JSONObject systemUserData = responseJSON.getJSONArray("systemUserData").getJSONObject(0);
+
+							UserDetails newUserDetails = new UserDetails(
+								systemUserData.getLong("userId"),
+								systemUserData.optString("username", null),
+								systemUserData.optString("firstName", null),
+								systemUserData.optString("lastName", null),
+								txtRegCompanyName.getText().toString(),
+								systemUserData.optString("msisdn", null),
+								systemUserData.optString("email", null),
+								txtRegPin.getText().toString()
+							);
+
+							clearUserDetailsCache();
+							getGoPayDB(registerActivity).setUserDetails(newUserDetails);
+							finish();
+							Intent mainIntent = new Intent(registerActivity, MainActivity.class);
+							startActivity(mainIntent);
+							runOnUiThread(new Runnable() {
+								public void run() {
 								makeText(registerActivity, "Registration successful.", LENGTH_LONG).show();
-							}
-						});
+								}
+							});
+
+							Log.i(TAG, format("Saved user %s %s (%s) with id %s",
+								newUserDetails.getFirstName(), newUserDetails.getLastName(),
+								newUserDetails.getUsername(), newUserDetails.getBtUserId()
+							));
+						} catch (final Exception ex) {
+							ex.printStackTrace();
+							Log.e(TAG, "Failed to register user: " + ex.getMessage());
+							registerActivity.runOnUiThread(new Runnable() {
+								public void run() {
+								makeText(registerActivity, "Failed to register user: " + ex.getMessage(), LENGTH_LONG).show();
+								}
+							});
+						}
 					}
 //					else if (registerResponse.getResponseCode().equals(PREVIOUS_EMAIL_FOUND) ||
 //							   registerResponse.getResponseCode().equals(PREVIOUS_MSISDN_FOUND)) {

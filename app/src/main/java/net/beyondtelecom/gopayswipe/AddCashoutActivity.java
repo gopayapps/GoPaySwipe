@@ -11,36 +11,32 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import net.beyondtelecom.gopayswipe.common.ActivityCommon;
-import net.beyondtelecom.gopayswipe.dto.AccountType;
-import net.beyondtelecom.gopayswipe.dto.CashoutOption;
-import net.beyondtelecom.gopayswipe.dto.WalletAccount;
+import net.beyondtelecom.gopayswipe.common.BTResponseCode;
+import net.beyondtelecom.gopayswipe.dto.CashoutAccount;
+import net.beyondtelecom.gopayswipe.dto.FinancialInstitution;
+import net.beyondtelecom.gopayswipe.dto.InstitutionType;
 
-import java.util.ArrayList;
+import java.util.Hashtable;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
-import static net.beyondtelecom.gopayswipe.LoginActivity.getGoPayDB;
-import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getCashoutOptions;
+import static net.beyondtelecom.gopayswipe.common.ActivityCommon.addCashoutAccount;
+import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getFinancialInstitutions;
+import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getTag;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNumeric;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidEmail;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidMsisdn;
 import static net.beyondtelecom.gopayswipe.common.Validator.isValidName;
+import static net.beyondtelecom.gopayswipe.common.Validator.isValidPlainText;
+import static net.beyondtelecom.gopayswipe.dto.InstitutionType.BANK;
+import static net.beyondtelecom.gopayswipe.dto.InstitutionType.MOBILE_BANK;
+import static net.beyondtelecom.gopayswipe.dto.InstitutionType.ONLINE_BANK;
 
-/**
- * A login screen that offers login via email/password and via Google+ sign in.
- * <p/>
- * ************ IMPORTANT SETUP NOTES: ************
- * In order for Google+ sign in to work with your app, you must first go to:
- * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
- * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
- */
 public class AddCashoutActivity extends AppCompatActivity {
 
-	private static final String TAG = ActivityCommon.getTag(LoginActivity.class);
+	private static final String TAG = getTag(LoginActivity.class);
 	private Activity cashoutActivity;
-//	private static Hashtable<Integer, CashoutOption> cashoutOptions;
 	private Spinner spnChooseBank;
 	private EditText edtAccountNickname;
 	private EditText edtAccountPhone;
@@ -50,7 +46,7 @@ public class AddCashoutActivity extends AppCompatActivity {
 	private EditText edtBankBranch;
 	private Button btnAddCashoutAccount;
 	private LinearLayout layoutBankAccount;
-	private AccountType cashoutAccountType;
+	private InstitutionType cashoutInstitutionType;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +78,11 @@ public class AddCashoutActivity extends AppCompatActivity {
 	class ChooseBankListener implements AdapterView.OnItemSelectedListener {
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			ArrayList<CashoutOption> cashoutOptions = getCashoutOptions(cashoutActivity);
-			for (CashoutOption cashoutOption : cashoutOptions) {
-				if (cashoutOption.getCashoutOptionName().equals(spnChooseBank.getSelectedItem().toString())) {
-					cashoutAccountType = cashoutOption.getAccountType();
-					switch (cashoutAccountType) {
+			Hashtable<Integer, FinancialInstitution> financialInstitutions = getFinancialInstitutions(cashoutActivity);
+			for (FinancialInstitution financialInstitution : financialInstitutions.values()) {
+				if (financialInstitution.getInstitutionName().equals(spnChooseBank.getSelectedItem().toString())) {
+					cashoutInstitutionType = financialInstitution.getInstitutionType();
+					switch (cashoutInstitutionType) {
 						case MOBILE_BANK:
 							layoutBankAccount.setVisibility(View.GONE);
 							break;
@@ -109,100 +105,117 @@ public class AddCashoutActivity extends AppCompatActivity {
 	private void populateBankAccounts() {
 
 		ArrayAdapter<CharSequence> bankAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
-		ArrayList<CashoutOption> cashoutOptions = getCashoutOptions(this);
-		if (cashoutOptions == null) { return; }
-		for (CashoutOption cashoutOption : cashoutOptions) {
-			bankAdapter.add(cashoutOption.getCashoutOptionName());
+		Hashtable<Integer, FinancialInstitution> financialInstitutions = getFinancialInstitutions(this);
+		if (financialInstitutions == null) { return; }
+		for (FinancialInstitution financialInstitution : financialInstitutions.values()) {
+			bankAdapter.add(financialInstitution.getInstitutionName());
 		}
 		spnChooseBank.setAdapter(bankAdapter);
+	}
+
+	private boolean isValidInputs(FinancialInstitution financialInstitution) {
+
+		edtAccountNickname.setError(null);
+		edtAccountPhone.setError(null);
+		edtAccountEmail.setError(null);
+		edtBankAccountName.setError(null);
+		edtBankAccountNumber.setError(null);
+		edtBankBranch.setError(null);
+
+		if (isNullOrEmpty(edtAccountNickname.getText().toString())) {
+			edtAccountNickname.setError(getString(R.string.error_field_required));
+			return false;
+		} else if (!isValidPlainText(edtAccountNickname.getText().toString())) {
+			edtAccountNickname.setError(getString(R.string.error_invalid_name));
+			return false;
+		}
+
+		if ((!isNullOrEmpty(edtAccountPhone.getText().toString()) ||
+			financialInstitution.getInstitutionType().equals(MOBILE_BANK))
+				&& !isValidMsisdn(edtAccountPhone.getText().toString())) {
+			edtAccountPhone.setError("Mobile number is not valid");
+			edtAccountPhone.requestFocus();
+			return false;
+		} else if ((!isNullOrEmpty(edtAccountEmail.getText().toString()) ||
+			financialInstitution.getInstitutionType().equals(ONLINE_BANK))
+				&& !isValidEmail(edtAccountEmail.getText().toString())) {
+			edtAccountEmail.setError("Email is not valid");
+			edtAccountEmail.requestFocus();
+			return false;
+		}
+
+		if ((!isNullOrEmpty(edtBankAccountName.getText().toString()) ||
+			financialInstitution.getInstitutionType().equals(BANK))
+				&& !isValidName(edtBankAccountName.getText().toString())) {
+			edtBankAccountName.setError("Account Name is not valid");
+			edtBankAccountName.requestFocus();
+			return false;
+		} else if ((!isNullOrEmpty(edtBankAccountNumber.getText().toString()) ||
+					financialInstitution.getInstitutionType().equals(BANK))
+						&& !isNumeric(edtBankAccountNumber.getText().toString())) {
+			edtBankAccountNumber.setError("Account Number is not valid");
+			edtBankAccountNumber.requestFocus();
+			return false;
+		} else if (!isNullOrEmpty(edtBankBranch.getText().toString()) && !isNumeric(edtBankBranch.getText().toString())) {
+			edtBankBranch.setError("Branch code is not valid");
+			edtBankBranch.requestFocus();
+			return false;
+		}
+
+		return true;
 	}
 
 	class AddBankCashoutListener implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
-			WalletAccount walletAccount = new WalletAccount();
 
-			ArrayList<CashoutOption> cashoutOptions = getCashoutOptions(cashoutActivity);
-			if (cashoutOptions == null) { return; }
-			for (CashoutOption cashoutOption : cashoutOptions) {
-				if (cashoutOption.getCashoutOptionName().equals(spnChooseBank.getSelectedItem().toString())) {
-					walletAccount.setCashoutOption(cashoutOption);
+			CashoutAccount cashoutAccount = new CashoutAccount();
+
+			Hashtable<Integer, FinancialInstitution> financialInstitutions = getFinancialInstitutions(cashoutActivity);
+			if (financialInstitutions == null) { return; }
+			for (FinancialInstitution financialInstitution : financialInstitutions.values()) {
+				if (financialInstitution.getInstitutionName().equals(spnChooseBank.getSelectedItem().toString())) {
+					cashoutAccount.setFinancialInstitution(financialInstitution);
 					break;
 				}
 			}
 
-			walletAccount.setWalletNickname(isNullOrEmpty(edtAccountNickname.getText().toString()) ? null : edtAccountNickname.getText().toString());
+			if (!isValidInputs(cashoutAccount.getFinancialInstitution())) { return; }
 
-			if (!isNullOrEmpty(edtAccountPhone.getText().toString()) && !isValidMsisdn(edtAccountPhone.getText().toString())) {
-				edtAccountPhone.setError("Mobile number is not valid");
-				edtAccountPhone.requestFocus();
-				return;
-			} else if (!isNullOrEmpty(edtAccountEmail.getText().toString()) && !isValidEmail(edtAccountEmail.getText().toString())) {
-				edtAccountEmail.setError("Email is not valid");
-				edtAccountEmail.requestFocus();
-				return;
-			}
+			cashoutAccount.setAccountNickName(edtAccountNickname.getText().toString());
+			cashoutAccount.setAccountPhone(isNullOrEmpty(edtAccountPhone.getText().toString()) ? null : edtAccountPhone.getText().toString());
+			cashoutAccount.setAccountEmail(isNullOrEmpty(edtAccountEmail.getText().toString()) ? null : edtAccountEmail.getText().toString());
 
-			walletAccount.setWalletPhone(isNullOrEmpty(edtAccountPhone.getText().toString()) ? null : edtAccountPhone.getText().toString());
-			walletAccount.setWalletEmail(isNullOrEmpty(edtAccountEmail.getText().toString()) ? null : edtAccountEmail.getText().toString());
-
-			switch (walletAccount.getCashoutOption().getAccountType()) {
+			switch (cashoutAccount.getFinancialInstitution().getInstitutionType()) {
 				case MOBILE_BANK:
-					edtAccountPhone.setError(null);
-					if (!isValidMsisdn(walletAccount.getWalletPhone())) {
-						edtAccountPhone.setError("Mobile number is not valid");
-						edtAccountPhone.requestFocus();
-						return;
-					}
-					walletAccount.setWalletAccountNumber(walletAccount.getWalletPhone());
+					cashoutAccount.setAccountNumber(cashoutAccount.getAccountPhone());
 					break;
 				case BANK:
-
-					if (!isNullOrEmpty(edtBankAccountName.getText().toString()) && !isValidName(edtBankAccountName.getText().toString())) {
-						edtBankAccountName.setError("Account Name is not valid");
-						edtBankAccountName.requestFocus();
-						return;
-					} else if (!isNullOrEmpty(edtBankAccountNumber.getText().toString()) && !isNumeric(edtBankAccountNumber.getText().toString())) {
-						edtBankAccountNumber.setError("Account Number is not valid");
-						edtBankAccountNumber.requestFocus();
-						return;
-					} else if (!isNullOrEmpty(edtBankBranch.getText().toString()) && !isNumeric(edtBankBranch.getText().toString())) {
-						edtBankBranch.setError("Branch code is not valid");
-						edtBankBranch.requestFocus();
-						return;
-					}
-					walletAccount.setWalletName(isNullOrEmpty(edtBankAccountName.getText().toString()) ? null : edtBankAccountName.getText().toString());
-					walletAccount.setWalletAccountNumber(isNullOrEmpty(edtBankAccountNumber.getText().toString()) ? null : edtBankAccountNumber.getText().toString());
-					walletAccount.setWalletAccountBranch(isNullOrEmpty(edtBankBranch.getText().toString()) ? null : edtBankBranch.getText().toString());
+					cashoutAccount.setAccountName(isNullOrEmpty(edtBankAccountName.getText().toString()) ? null : edtBankAccountName.getText().toString());
+					cashoutAccount.setAccountNumber(isNullOrEmpty(edtBankAccountNumber.getText().toString()) ? null : edtBankAccountNumber.getText().toString());
+					cashoutAccount.setAccountBranchCode(isNullOrEmpty(edtBankBranch.getText().toString()) ? null : edtBankBranch.getText().toString());
 					break;
 				case ONLINE_BANK:
-					if (!isValidEmail(walletAccount.getWalletEmail())) {
-						edtAccountEmail.setError("Email is not valid");
-						edtAccountEmail.requestFocus();
-						return;
-					}
-					walletAccount.setWalletAccountNumber(walletAccount.getWalletEmail());
+					cashoutAccount.setAccountNumber(cashoutAccount.getAccountEmail());
 					break;
 			}
 
-			getGoPayDB().insertWalletAccount(walletAccount);
-			runOnUiThread(new Runnable() {
-				public void run() { makeText(cashoutActivity, "Cashout Option Added Successfully", LENGTH_LONG).show(); }
-			});
-
-			finish();
+			final BTResponseCode addResponse = addCashoutAccount(cashoutActivity, cashoutAccount);
+			if (addResponse.equals(BTResponseCode.SUCCESS)) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						makeText(cashoutActivity, "Cashout Option Added Successfully", LENGTH_LONG).show();
+					}
+				});
+				finish();
+			} else {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						makeText(cashoutActivity, "Failed to add cashout option: " + addResponse.getMessage(), LENGTH_LONG).show();
+					}
+				});
+			}
 		}
 	}
-
-//	public Hashtable<Integer, CashoutOption> getCashoutOptions() {
-//		if (cashoutOptions == null && getGoPayDB() != null) {
-//			Log.i(TAG, "Checking for cashout options");
-//			cashoutOptions = getGoPayDB().getCashoutOptions();
-//			if (cashoutOptions != null) {
-//				Log.i(TAG, "Loaded " + cashoutOptions.size() + " cashout options");
-//			}
-//		}
-//		return cashoutOptions;
-//	}
 }
 

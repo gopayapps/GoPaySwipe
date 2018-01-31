@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import com.square.MagRead;
 import com.square.MagReadListener;
 
+import net.beyondtelecom.gopayswipe.common.ActivityCommon;
 import net.beyondtelecom.gopayswipe.common.ReferenceGenerator;
 import net.beyondtelecom.gopayswipe.dto.CardType;
 import net.beyondtelecom.gopayswipe.dto.CurrencyType;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
-import static net.beyondtelecom.gopayswipe.LoginActivity.getGoPayDB;
+import static net.beyondtelecom.gopayswipe.MainActivity.getMainActivity;
 import static net.beyondtelecom.gopayswipe.TabWallet.getCashoutDetails;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNumeric;
@@ -40,7 +41,7 @@ import static net.beyondtelecom.gopayswipe.dto.CardType.UNKNOWN;
 
 public class TabCharge extends Fragment {
 
-    private MainActivity mainActivity = MainActivity.getMainActivity();
+    private MainActivity mainActivity = getMainActivity();
     private Spinner chooseCurrencyType;
     private UpdateBytesHandler updateBytesHandler;
     private EditText edtTransactionAmount;
@@ -101,9 +102,9 @@ public class TabCharge extends Fragment {
 
     private void populateCurrencies() {
 
-        ArrayList<CurrencyType> currencyTypes = getGoPayDB().getCurrencyTypes();
+        ArrayList<CurrencyType> currencyTypes = ActivityCommon.getCurrencies(getMainActivity());
         ArrayAdapter<CharSequence> currencyTypeAdapter = new ArrayAdapter<>(
-                MainActivity.getMainActivity(), android.R.layout.simple_spinner_item);
+                getMainActivity(), android.R.layout.simple_spinner_item);
 
         for (CurrencyType currencyType : currencyTypes) {
             currencyTypeAdapter.add(currencyType.getCurrencyTypeName());

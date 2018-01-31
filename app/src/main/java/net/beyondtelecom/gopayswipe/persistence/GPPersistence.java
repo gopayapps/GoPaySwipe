@@ -6,14 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import net.beyondtelecom.gopayswipe.dto.AccountType;
-import net.beyondtelecom.gopayswipe.dto.CashoutOption;
-import net.beyondtelecom.gopayswipe.dto.CurrencyType;
 import net.beyondtelecom.gopayswipe.dto.UserDetails;
-import net.beyondtelecom.gopayswipe.dto.WalletAccount;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 import static net.beyondtelecom.gopayswipe.common.ActivityCommon.getTag;
 import static net.beyondtelecom.gopayswipe.common.Validator.isNullOrEmpty;
@@ -36,11 +31,6 @@ public class GPPersistence extends SQLiteOpenHelper {
 
 	public static final String USER_DETAILS = "user_details";						static { ALL_TABLES.add(USER_DETAILS); }
 
-	public static final String CURRENCY_TYPE = "currency_type";						static { ALL_TABLES.add(CURRENCY_TYPE); }
-	public static final String CASHOUT_OPTION = "cashout_option";					static { ALL_TABLES.add(CASHOUT_OPTION); }
-
-	public static final String WALLET_ACCOUNT = "wallet_account";					static { ALL_TABLES.add(WALLET_ACCOUNT); }
-
 	private SQLiteDatabase sqlLiteDatabase = null;
 
     public GPPersistence(Context context) { super(context, DATABASE_NAME, null, DATABASE_VERSION); }
@@ -50,6 +40,7 @@ public class GPPersistence extends SQLiteOpenHelper {
 		Log.i(TAG, "Redeploying core database...");
 
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + USER_DETAILS + " (" +
+				"bt_user_id INTEGER PRIMARY KEY," +
 				"username VARCHAR(50)," +
 				"first_name VARCHAR(50)," +
 				"last_name VARCHAR(50)," +
@@ -58,52 +49,6 @@ public class GPPersistence extends SQLiteOpenHelper {
 				"email VARCHAR(255)," +
 				"pin VARCHAR(50))");
 
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + CURRENCY_TYPE + " (" +
-				"currency_type_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-				"currency_type_name VARCHAR(50))");
-
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + CASHOUT_OPTION + " (" +
-				"cashout_option_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-				"cashout_option_name VARCHAR(50)," +
-				"cashout_option_type VARCHAR(50))");
-
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + WALLET_ACCOUNT + " (" +
-				"wallet_account_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-				"cashout_option_id INTEGER," +
-				"wallet_nick_name VARCHAR(50)," +
-				"wallet_name VARCHAR(50)," +
-				"wallet_account_number INT(30)," +
-				"wallet_branch VARCHAR(50)," +
-				"wallet_phone VARCHAR(50)," +
-				"wallet_email VARCHAR(50))");
-
-		db.execSQL("INSERT INTO " + CASHOUT_OPTION + " (cashout_option_name,cashout_option_type) VALUES " +
-				" ('EcoCash','" + AccountType.MOBILE_BANK.name() + "')," +
-				" ('Telecash','" + AccountType.MOBILE_BANK.name() + "')," +
-				" ('NetCash','" + AccountType.MOBILE_BANK.name() + "')," +
-				" ('PayPal','" + AccountType.ONLINE_BANK.name() + "')," +
-				" ('Skrill','" + AccountType.ONLINE_BANK.name() + "')," +
-				" ('Agribank','" + AccountType.BANK.name() + "')," +
-				" ('BancABC','" + AccountType.BANK.name() + "')," +
-				" ('Barclays Bank','" + AccountType.BANK.name() + "')," +
-				" ('CABS','" + AccountType.BANK.name() + "')," +
-				" ('CBZ','" + AccountType.BANK.name() + "')," +
-				" ('Ecobank','" + AccountType.BANK.name() + "')," +
-				" ('FBC','" + AccountType.BANK.name() + "')," +
-				" ('MBCA','" + AccountType.BANK.name() + "')," +
-				" ('Metbank','" + AccountType.BANK.name() + "')," +
-				" ('NMB','" + AccountType.BANK.name() + "')," +
-				" ('POSB','" + AccountType.BANK.name() + "')," +
-				" ('Stanbic Bank','" + AccountType.BANK.name() + "')," +
-				" ('Standard Chartered','" + AccountType.BANK.name() + "')," +
-				" ('Steward Bank','" + AccountType.BANK.name() + "')," +
-				" ('ZB Bank','" + AccountType.BANK.name() + "')");
-
-		db.execSQL("INSERT INTO " + CURRENCY_TYPE + " (currency_type_id,currency_type_name) VALUES " +
-				" (1, 'USD')," +
-				" (2, 'ZAR')," +
-				" (3, 'GBP')," +
-				" (4, 'BWP')");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -135,7 +80,7 @@ public class GPPersistence extends SQLiteOpenHelper {
 	public String dumpDatabaseToString() {
     	StringBuilder database = new StringBuilder();
 
-		String[] allTables = new String[]{USER_DETAILS,CURRENCY_TYPE,CASHOUT_OPTION,WALLET_ACCOUNT};
+		String[] allTables = new String[]{USER_DETAILS};
 		for (String table : allTables) {
 			Cursor dbCursor = getGPWritableDatabase().rawQuery("SELECT * FROM " + table, null);
 			database.append("TABLE: ").append(table).append("\n");
@@ -152,42 +97,42 @@ public class GPPersistence extends SQLiteOpenHelper {
 		return database.toString();
 	}
 
-	public Hashtable<Integer, CashoutOption> getCashoutOptions() {
-		Cursor cashoutData = getGPWritableDatabase().rawQuery(
-			"SELECT * FROM " + CASHOUT_OPTION, null);
-		if (cashoutData.isAfterLast()) { return null; }
-		Hashtable<Integer, CashoutOption> cashoutOptions = new Hashtable<>();
-		cashoutData.moveToNext();
-		while (!cashoutData.isAfterLast()) {
-			cashoutOptions.put(cashoutData.getInt(0), new CashoutOption(
-					cashoutData.getInt(0),
-					cashoutData.getString(1),
-					AccountType.valueOf(cashoutData.getString(2)))
-			);
-			cashoutData.moveToNext();
-		}
-		Log.i(TAG, "Returning " + cashoutOptions.size() + " cashout options");
-		if (cashoutOptions.size() == 0) { return null; }
-		return cashoutOptions;
-	}
-
-    public ArrayList<CurrencyType> getCurrencyTypes() {
-		Cursor currencyData = getGPWritableDatabase().rawQuery(
-			"SELECT * FROM " + CURRENCY_TYPE, null);
-		if (currencyData.isAfterLast()) { return null; }
-		ArrayList<CurrencyType> currencyType = new ArrayList<>();
-		currencyData.moveToNext();
-		while (!currencyData.isAfterLast()) {
-			currencyType.add(new CurrencyType(
-					currencyData.getInt(0),
-					currencyData.getString(1))
-			);
-			currencyData.moveToNext();
-		}
-		Log.i(TAG, "Returning " + currencyType.size() + " currencyType");
-		if (currencyType.size() == 0) { return null; }
-		return currencyType;
-	}
+//	public Hashtable<Integer, FinancialInstitution> getFinancialInstitutions() {
+//		Cursor cashoutData = getGPWritableDatabase().rawQuery(
+//			"SELECT * FROM " + CASHOUT_OPTION, null);
+//		if (cashoutData.isAfterLast()) { return null; }
+//		Hashtable<Integer, FinancialInstitution> cashoutOptions = new Hashtable<>();
+//		cashoutData.moveToNext();
+//		while (!cashoutData.isAfterLast()) {
+//			cashoutOptions.put(cashoutData.getInt(0), new FinancialInstitution(
+//					cashoutData.getInt(0),
+//					cashoutData.getString(1),
+//					InstitutionType.valueOf(cashoutData.getString(2)))
+//			);
+//			cashoutData.moveToNext();
+//		}
+//		Log.i(TAG, "Returning " + cashoutOptions.size() + " cashout options");
+//		if (cashoutOptions.size() == 0) { return null; }
+//		return cashoutOptions;
+//	}
+//
+//    public ArrayList<CurrencyType> getCurrencyTypes() {
+//		Cursor currencyData = getGPWritableDatabase().rawQuery(
+//			"SELECT * FROM " + CURRENCY_TYPE, null);
+//		if (currencyData.isAfterLast()) { return null; }
+//		ArrayList<CurrencyType> currencyType = new ArrayList<>();
+//		currencyData.moveToNext();
+//		while (!currencyData.isAfterLast()) {
+//			currencyType.add(new CurrencyType(
+//					currencyData.getInt(0),
+//					currencyData.getString(1))
+//			);
+//			currencyData.moveToNext();
+//		}
+//		Log.i(TAG, "Returning " + currencyType.size() + " currencyType");
+//		if (currencyType.size() == 0) { return null; }
+//		return currencyType;
+//	}
 
 	public UserDetails getUserDetails() {
 		Cursor userData = getGPWritableDatabase().rawQuery(
@@ -195,67 +140,76 @@ public class GPPersistence extends SQLiteOpenHelper {
 		if (userData.isAfterLast()) { return null; }
 		userData.moveToFirst();
 		UserDetails userDetails = new UserDetails();
-		userDetails.setUsername(userData.isNull(0) ? null : userData.getString(0));
-		userDetails.setFirstName(userData.isNull(1) ? null : userData.getString(1));
-		userDetails.setLastName(userData.isNull(2) ? null : userData.getString(2));
-		userDetails.setCompanyName(userData.isNull(3) ? null : userData.getString(3));
-		userDetails.setMsisdn(userData.isNull(4) ? null : userData.getString(4));
-		userDetails.setEmail(userData.isNull(5) ? null : userData.getString(5));
-		userDetails.setPin(userData.isNull(6) ? null : userData.getString(6));
+		userDetails.setBtUserId(userData.isNull(0) ? null : userData.getLong(0));
+		userDetails.setUsername(userData.isNull(1) ? null : userData.getString(1));
+		userDetails.setFirstName(userData.isNull(2) ? null : userData.getString(2));
+		userDetails.setLastName(userData.isNull(3) ? null : userData.getString(3));
+		userDetails.setCompanyName(userData.isNull(4) ? null : userData.getString(4));
+		userDetails.setMsisdn(userData.isNull(5) ? null : userData.getString(5));
+		userDetails.setEmail(userData.isNull(6) ? null : userData.getString(6));
+		userDetails.setPin(userData.isNull(7) ? null : userData.getString(7));
 		return userDetails;
 	}
 
-	public void insertWalletAccount(WalletAccount walletAccount) {
-			String sql = "INSERT INTO " + WALLET_ACCOUNT +
-				" (cashout_option_id, wallet_nick_name, wallet_name," +
-				" wallet_account_number, wallet_branch, wallet_phone," +
-				" wallet_email) VALUES (" +
-				"'" + walletAccount.getCashoutOption().getCashoutOptionId() + "'," +
-				(isNullOrEmpty(walletAccount.getWalletNickname()) ? null : "'" + walletAccount.getWalletNickname() + "'") + "," +
-				(isNullOrEmpty(walletAccount.getWalletName()) ? null : "'" + walletAccount.getWalletName() + "'") + "," +
-				(isNullOrEmpty(walletAccount.getWalletAccountNumber()) ? null : "'" + walletAccount.getWalletAccountNumber() + "'") + "," +
-				(isNullOrEmpty(walletAccount.getWalletAccountBranch()) ? null : "'" + walletAccount.getWalletAccountBranch() + "'") + "," +
-				(isNullOrEmpty(walletAccount.getWalletPhone()) ? null : "'" + walletAccount.getWalletPhone() + "'") + "," +
-				(isNullOrEmpty(walletAccount.getWalletEmail()) ? null : "'" + walletAccount.getWalletEmail() + "'") + ")";
-			getGPWritableDatabase().execSQL(sql);
-	}
+//	public void insertWalletAccount(CashoutAccount walletAccount) {
+//			String sql = "INSERT INTO " + WALLET_ACCOUNT +
+//				" (cashout_option_id, wallet_nick_name, wallet_name," +
+//				" wallet_account_number, wallet_branch, wallet_phone," +
+//				" wallet_email) VALUES (" +
+//				"'" + walletAccount.getFinancialInstitution().getInstitutionId() + "'," +
+//				(isNullOrEmpty(walletAccount.getAccountNickName()) ? null : "'" + walletAccount.getAccountNickName() + "'") + "," +
+//				(isNullOrEmpty(walletAccount.getAccountName()) ? null : "'" + walletAccount.getAccountName() + "'") + "," +
+//				(isNullOrEmpty(walletAccount.getAccountNumber()) ? null : "'" + walletAccount.getAccountNumber() + "'") + "," +
+//				(isNullOrEmpty(walletAccount.getAccountBranchCode()) ? null : "'" + walletAccount.getAccountBranchCode() + "'") + "," +
+//				(isNullOrEmpty(walletAccount.getAccountPhone()) ? null : "'" + walletAccount.getAccountPhone() + "'") + "," +
+//				(isNullOrEmpty(walletAccount.getAccountEmail()) ? null : "'" + walletAccount.getAccountEmail() + "'") + ")";
+//			getGPWritableDatabase().execSQL(sql);
+//	}
 
-	public ArrayList<WalletAccount> getWalletAccounts() {
-
-		Hashtable<Integer, CashoutOption> cashoutOptions = getCashoutOptions();
-		Cursor accountData = getGPWritableDatabase().rawQuery(
-				"SELECT * FROM " + WALLET_ACCOUNT, null);
-		if (accountData.isAfterLast()) { return null; }
-		ArrayList<WalletAccount> walletAccounts = new ArrayList<>();
-		accountData.moveToNext();
-		while (!accountData.isAfterLast()) {
-			walletAccounts.add(new WalletAccount(
-					accountData.isNull(0) ? null : accountData.getInt(0), //wallet_account_id
-					accountData.isNull(1) ? null : cashoutOptions.get(accountData.getInt(1)), //cashout_option_id
-					accountData.isNull(2) ? null : accountData.getString(2), //wallet_nick_name
-					accountData.isNull(3) ? null : accountData.getString(3), //wallet_name
-					accountData.isNull(4) ? null : accountData.getString(4), //wallet_account_number
-					accountData.isNull(5) ? null : accountData.getString(5), //wallet_branch
-					accountData.isNull(6) ? null : accountData.getString(6), //wallet_phone
-					accountData.isNull(7) ? null : accountData.getString(7)  //wallet_email
-				)
-			);
-			accountData.moveToNext();
-		}
-		Log.i(TAG, "Returning " + walletAccounts.size() + " wallet accounts");
-		if (walletAccounts.size() == 0) { return null; }
-		return walletAccounts;
-	}
-
-	public void deleteWalletAccount(Integer walletAccountId) {
-		getGPWritableDatabase().execSQL(
-			"DELETE FROM " + WALLET_ACCOUNT + " WHERE wallet_account_id = " + walletAccountId
-		);
-	}
+//	public ArrayList<CashoutAccount> getCashoutAccounts(Activity activity) {
+//
+//		ArrayList<FinancialInstitution> cashoutOptions = getFinancialInstitutions(activity);
+//		Cursor accountData = getGPWritableDatabase().rawQuery("SELECT * FROM " + WALLET_ACCOUNT, null);
+//		if (accountData.isAfterLast()) { return null; }
+//		ArrayList<CashoutAccount> walletAccounts = new ArrayList<>();
+//		accountData.moveToNext();
+//		while (!accountData.isAfterLast()) {
+//			FinancialInstitution cashoutOption = null;
+//			for (int c = 0; c < cashoutOptions.size(); c++) {
+//				if (cashoutOptions.get(c).getInstitutionId().equals(accountData.getInt(1))) {
+//					cashoutOption = cashoutOptions.get(c);
+//					break;
+//				}
+//			}
+//
+//			walletAccounts.add(new CashoutAccount(
+//					accountData.isNull(0) ? null : accountData.getInt(0), //wallet_account_id
+//					accountData.isNull(1) ? null : cashoutOption, 						 //cashout_option_id
+//					accountData.isNull(2) ? null : accountData.getString(2), //wallet_nick_name
+//					accountData.isNull(3) ? null : accountData.getString(3), //wallet_name
+//					accountData.isNull(4) ? null : accountData.getString(4), //wallet_account_number
+//					accountData.isNull(5) ? null : accountData.getString(5), //wallet_branch
+//					accountData.isNull(6) ? null : accountData.getString(6), //wallet_phone
+//					accountData.isNull(7) ? null : accountData.getString(7)  //wallet_email
+//				)
+//			);
+//			accountData.moveToNext();
+//		}
+//		Log.i(TAG, "Returning " + walletAccounts.size() + " wallet accounts");
+//		if (walletAccounts.size() == 0) { return null; }
+//		return walletAccounts;
+//	}
+//
+//	public void deleteWalletAccount(Integer walletAccountId) {
+//		getGPWritableDatabase().execSQL(
+//			"DELETE FROM " + WALLET_ACCOUNT + " WHERE wallet_account_id = " + walletAccountId
+//		);
+//	}
 
 	public void setUserDetails(UserDetails newUserDetails) {
 		getGPWritableDatabase().execSQL("DELETE FROM " + USER_DETAILS);
-		String sql = "INSERT INTO " + USER_DETAILS + "(username,first_name,last_name,company_name,msisdn,email,pin) VALUES (" +
+		String sql = "INSERT INTO " + USER_DETAILS + "(bt_user_id,username,first_name,last_name,company_name,msisdn,email,pin) VALUES (" +
+			(newUserDetails.getBtUserId() == null ? null : "'" + newUserDetails.getBtUserId() + "'") + "," +
 			(isNullOrEmpty(newUserDetails.getUsername()) ? null : "'" + newUserDetails.getUsername() + "'") + "," +
 			(isNullOrEmpty(newUserDetails.getFirstName()) ? null : "'" + newUserDetails.getFirstName() + "'") + "," +
 			(isNullOrEmpty(newUserDetails.getLastName()) ? null : "'" + newUserDetails.getLastName() + "'") + "," +

@@ -5,6 +5,7 @@ package net.beyondtelecom.gopayswipe.dto;
  */
 public class UserDetails {
 
+	Long btUserId;
 	String username;
 	String firstName;
 	String lastName;
@@ -15,8 +16,9 @@ public class UserDetails {
 
 	public UserDetails() {}
 
-	public UserDetails(String username, String firstName, String lastName, String companyName,
+	public UserDetails(Long btUserId, String username, String firstName, String lastName, String companyName,
 					   String msisdn, String email, String pin) {
+		this.btUserId = btUserId;
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -24,6 +26,14 @@ public class UserDetails {
 		this.msisdn = msisdn;
 		this.email = email;
 		this.pin = pin;
+	}
+
+	public Long getBtUserId() {
+		return btUserId;
+	}
+
+	public void setBtUserId(Long btUserId) {
+		this.btUserId = btUserId;
 	}
 
 	public String getUsername() {

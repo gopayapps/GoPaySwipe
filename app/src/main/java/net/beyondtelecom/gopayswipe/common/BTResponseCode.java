@@ -58,9 +58,10 @@ public enum BTResponseCode implements Serializable
 
 	// Registration Codes
 	REGISTRATION_FAILED         (351,	"Registration Failed"),
-	PREVIOUS_MSISDN_FOUND       (352,	"Mobile number has been previously registered"),
-	PREVIOUS_EMAIL_FOUND        (353,	"Email has been previously registered"),
-	PREVIOUS_REGISTRATION_FOUND (354,	"Previous registration found.")
+	PREVIOUS_USERNAME_FOUND     (352,	"Username has been previously registered"),
+	PREVIOUS_MSISDN_FOUND       (353,	"Mobile number has been previously registered"),
+	PREVIOUS_EMAIL_FOUND        (354,	"Email has been previously registered"),
+	PREVIOUS_REGISTRATION_FOUND (355,	"Previous registration found.")
 	;
 
 	public final Integer code;
