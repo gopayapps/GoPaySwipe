@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">5dp</dimen>
     <dimen name="activity_ui_items">240dp</dimen>
     <dimen name="activity_half_ui_items">120dp</dimen>
-	<dimen name="horizontal_space">16dp</dimen>
+	<dimen name="default_margin_space">16dp</dimen>
 	<dimen name="fab_margin">16dp</dimen>
 	<dimen name="vertical_space">12dp</dimen>
     <dimen name="title_heading_size">24sp</dimen>

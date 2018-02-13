@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.beyondtelecom.gopayswipe" >
+    package="net.beyondtelecom.gopay" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".LoginActivity"
+            android:name="net.beyondtelecom.gopay.LoginActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:screenOrientation="landscape"
@@ -27,27 +27,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="net.beyondtelecom.gopay.MainActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name="net.beyondtelecom.gopay.RegisterActivity"
             android:label="@string/title_register_details" >
         </activity>
         <activity
-            android:name=".ReRegisterActivity"
+            android:name="net.beyondtelecom.gopay.ReRegisterActivity"
             android:label="@string/title_reregister_details" >
         </activity>
         <activity
-            android:name=".PinActivity"
+            android:name="net.beyondtelecom.gopay.PinActivity"
             android:label="@string/title_pin_details" >
         </activity>
         <activity
-            android:name=".AddCashoutActivity"
+            android:name="net.beyondtelecom.gopay.AddCashoutActivity"
             android:label="@string/title_cashout_details" >
         </activity>
         <activity
-            android:name=".CashoutActivity"
+            android:name="net.beyondtelecom.gopay.CashoutActivity"
             android:label="@string/title_cashout" >
         </activity>
 

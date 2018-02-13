@@ -14,11 +14,13 @@
 	<!-- Login progress -->
 	<ProgressBar
 		android:id="@+id/prgLogin"
-		style="?android:attr/progressBarStyleLarge"
+		style="?android:attr/progressBarStyleInverse"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginBottom="8dp"
+		android:layout_gravity="center"
 		android:indeterminate="true"
+		android:background="@android:color/transparent"
 		android:visibility="gone" />
 
 	<ScrollView
@@ -61,6 +63,7 @@
 					android:layout_width="@dimen/activity_ui_items"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
+					android:gravity="center"
 					android:drawableTop="@drawable/login"
 					android:hint="@string/prompt_username"
 					android:imeActionLabel="@string/action_login_short"
@@ -76,6 +79,7 @@
 					android:layout_width="@dimen/activity_ui_items"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
+					android:gravity="center"
 					android:hint="@string/prompt_pin"
 					android:imeActionLabel="@string/action_login_short"
 					android:imeOptions="actionUnspecified"
@@ -88,7 +92,7 @@
 					android:id="@+id/btnLogin"
 					style="@style/Widget.AppCompat.Button.Colored"
 					android:backgroundTint="@color/colorPrimaryDark"
-					android:layout_width="@dimen/activity_ui_items"
+					android:layout_width="225dp"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
 					android:layout_marginTop="16dp"
@@ -98,12 +102,32 @@
 				<Button
 					android:id="@+id/btnRegister"
 					style="@style/Widget.AppCompat.Button.Colored"
+					android:layout_width="225dp"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
 					android:backgroundTint="@color/colorPrimary"
+					android:text="@string/action_register" />
+
+				<ImageView
 					android:layout_width="@dimen/activity_ui_items"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
-					android:text="@string/action_register" />
+					android:src="@drawable/facebook_login"
+					android:layout_marginTop="5dp" />
 
+				<ImageView
+					android:layout_width="@dimen/activity_ui_items"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:src="@drawable/google_login"
+					android:layout_marginTop="5dp" />
+
+				<ImageView
+					android:layout_width="@dimen/activity_ui_items"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:src="@drawable/twitter_login"
+					android:layout_marginTop="5dp" />
 			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>

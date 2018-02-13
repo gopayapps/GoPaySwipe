@@ -1,6 +1,7 @@
 <resources>
 	<string name="app_name">GoPay Swipe</string>
 
+	<string name="action_profile">Profile</string>
 	<string name="action_exit">Exit</string>
 
 	<string-array name="cashout_type">
@@ -42,7 +43,7 @@
 	<string name="prompt_phone">Phone Number</string>
 	<string name="prompt_gopay_pin">GoPay Pin</string>
 	<string name="prompt_pin">Pin</string>
-	<string name="prompt_new_pin">Pin</string>
+	<string name="prompt_new_pin">New Pin</string>
 	<string name="prompt_rpin">Repeat Pin</string>
 	<string name="prompt_password">Account Password</string>
 
@@ -83,6 +84,7 @@
 	<string name="label_currency_for_transaction">Transaction Currency</string>
 	<string name="label_transaction_details">Transaction Details</string>
 	<string name="label_cashout_options">Cashout Options</string>
+	<string name="label_wallet">Wallet</string>
 	<string name="label_transaction_summary">Transaction Summary</string>
 	<string name="label_no_reference">[No Reference Specified]</string>
 

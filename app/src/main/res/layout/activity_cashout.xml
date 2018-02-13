@@ -21,8 +21,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/horizontal_space"
-                android:layout_marginRight="@dimen/horizontal_space"
+                android:layout_marginLeft="@dimen/default_margin_space"
+                android:layout_marginRight="@dimen/default_margin_space"
                 android:orientation="vertical">
 
                 <TextView
@@ -69,8 +69,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:labelFor="@string/label_currency_for_transaction"
-                        android:layout_marginRight="@dimen/horizontal_space"
-                        android:layout_marginEnd="@dimen/horizontal_space" />
+                        android:layout_marginRight="@dimen/default_margin_space"
+                        android:layout_marginEnd="@dimen/default_margin_space" />
 
                     <EditText
                         android:id="@+id/edtCashoutAmount"

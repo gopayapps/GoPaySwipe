@@ -12,38 +12,31 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/vertical_space"
-        android:text="@string/label_wallet"
+        android:text="@string/label_cashout_options"
         android:textSize="@dimen/title_heading_size" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical|center_horizontal"
-        android:orientation="horizontal"
-        android:padding="5dp">
-
-        <TextView
-            android:id="@+id/txvCurrentBalance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/default_margin_space"
-            android:textColor="@android:color/holo_green_dark"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        android:layout_marginBottom="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btnRefreshBalance"
+            android:id="@+id/btnAddCashoutOption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             android:clickable="true"
             android:focusable="true"
-            android:foregroundGravity="right"
-            android:src="@android:drawable/ic_menu_rotate"
-            android:tag="Refresh Balance"
-            app:backgroundTint="@color/colorPrimary" />
+            android:src="@android:drawable/ic_input_add"
+            app:backgroundTint="@color/colorPrimaryDark" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/btnAddCashoutOption"
+            android:text="@string/prompt_add_cashout_option" />
 
     </LinearLayout>
 
@@ -52,7 +45,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/frmWalletHistory"
+            android:id="@+id/frmCashoutOptions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"

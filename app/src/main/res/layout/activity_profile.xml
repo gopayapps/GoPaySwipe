@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".RegisterActivity">
+    tools:context=".ProfileActivity">
 
     <include
         android:id="@+id/tool_bar"
@@ -13,7 +13,7 @@
 
     <!-- Register progress -->
     <ProgressBar
-        android:id="@+id/prgRegister"
+        android:id="@+id/prgProfile"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
 
 
     <ScrollView
-        android:id="@+id/register_form"
+        android:id="@+id/profile_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="false">
@@ -48,7 +48,7 @@
                 android:orientation="vertical">
 
                 <AutoCompleteTextView
-                    android:id="@+id/txtRegUsername"
+                    android:id="@+id/txtProfileUsername"
                     android:layout_width="@dimen/activity_ui_items"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -59,7 +59,7 @@
                     android:textSize="16sp" />
 
                 <AutoCompleteTextView
-                    android:id="@+id/txtRegFirstName"
+                    android:id="@+id/txtProfileFirstName"
                     android:layout_width="@dimen/activity_ui_items"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -70,7 +70,7 @@
                     android:textSize="16sp" />
 
                 <AutoCompleteTextView
-                    android:id="@+id/txtRegLastName"
+                    android:id="@+id/txtProfileLastName"
                     android:layout_width="@dimen/activity_ui_items"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -81,7 +81,7 @@
                     android:textSize="16sp" />
 
                 <AutoCompleteTextView
-                    android:id="@+id/txtRegCompanyName"
+                    android:id="@+id/txtProfileCompanyName"
                     android:layout_width="@dimen/activity_ui_items"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -92,7 +92,7 @@
                     android:textSize="16sp" />
 
                 <AutoCompleteTextView
-                    android:id="@+id/txtRegMsisdn"
+                    android:id="@+id/txtProfileMsisdn"
                     android:layout_width="@dimen/activity_ui_items"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -103,7 +103,7 @@
                     android:textSize="16sp" />
 
                 <AutoCompleteTextView
-                    android:id="@+id/txtRegEmail"
+                    android:id="@+id/txtProfileEmail"
                     android:layout_width="@dimen/activity_ui_items"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -121,18 +121,18 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/txtRegPin"
+                        android:id="@+id/txtProfilePin"
                         android:layout_width="@dimen/activity_half_ui_items"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:hint="@string/prompt_pin"
+                        android:hint="@string/prompt_new_pin"
                         android:inputType="numberPassword"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:textSize="16sp" />
 
                     <EditText
-                        android:id="@+id/txtRegRPin"
+                        android:id="@+id/txtProfileRPin"
                         android:layout_width="@dimen/activity_half_ui_items"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -145,7 +145,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/btnRegRegister"
+                    android:id="@+id/btnProfileUpdate"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="@dimen/activity_ui_items"
                     android:layout_height="wrap_content"

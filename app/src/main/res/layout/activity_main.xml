@@ -18,7 +18,7 @@
         android:layout_weight="1">
     </android.support.v4.view.ViewPager>
 
-    <net.beyondtelecom.gopayswipe.navigation.SlidingTabLayout
+    <net.beyondtelecom.gopay.navigation.SlidingTabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
